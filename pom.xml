@@ -26,6 +26,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!--
+        1. Setting -> Compiler
+        2. Advanced Settings 에서 설정
+        3. spring.devtools.livereload.enabled=true 설정
+        -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
