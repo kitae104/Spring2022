@@ -14,4 +14,6 @@ public class ThymeleafController {
         model.addAttribute("data", "타임리프 예제 입니다.");
         return "thymeleaf/ex01";
     }
+
+
 }

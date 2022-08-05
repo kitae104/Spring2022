@@ -1,8 +1,9 @@
 package kr.inhatc.spring.shop.item.repository;
 
+import kr.inhatc.spring.shop.item.entity.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import kr.inhatc.spring.shop.item.entity.Item;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
