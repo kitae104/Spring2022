@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="/css/thymeleaf.css" />
+</head>
+
+<body>
+
+    <h1>상품 리스트 출력 예제(th:if, th:unless)</h1>
+    <table>
+        <thead>
+            <tr>
+                <td>순번</td>
+                <td>상품명</td>
+                <td>상품설명</td>
+                <td>가격</td>
+                <td>상품등록일</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="itemDto, status: ${itemDtoList}">
+                <!--<td th:if="${status.even}" th:text="짝수"></td>
+                <td th:unless="${status.even}" th:text="홀수"></td>-->
+                <td th:switch="${status.even}">
+                    <span th:case=true class="even">짝수</span>
+                    <span th:case=false class="odd">홀수</span>
+                </td>
+                <td th:if="${status.even}" th:text="짝수"></td>
+                <td th:unless="${status.even}" th:text="홀수"></td>
+                <td th:text="${itemDto.itemNm}"></td>
+                <td th:text="${itemDto.itemDetail}"></td>
+                <td th:text="${itemDto.price}"></td>
+                <td th:text="${itemDto.regTime}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
