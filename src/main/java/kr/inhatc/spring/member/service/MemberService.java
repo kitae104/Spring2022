@@ -3,6 +3,10 @@ package kr.inhatc.spring.member.service;
 import kr.inhatc.spring.member.entity.Member;
 import kr.inhatc.spring.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -10,7 +14,7 @@ import javax.transaction.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberService {
+public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;    // 빈 주입, @Autowired와 동일
 
@@ -29,5 +33,26 @@ public class MemberService {
         if(findMember != null){
             throw new IllegalStateException("이미 가입된 회원입니다.");
         }
+    }
+
+    /**
+     * 로그인 사용자 확인
+     * @param email
+     * @return
+     * @throws UsernameNotFoundException
+     */
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Member member = memberRepository.findByEmail(email);
+        System.out.println("===========>" + member);
+        if(member != null){
+            throw new UsernameNotFoundException(email); // 해당 사용자가 없는 경우
+        }
+
+        return User.builder()                       // User 객체 생성하기
+                .username(member.getEmail())
+                .password(member.getPassword())
+                .roles(member.getRole().toString())
+                .build();
     }
 }

@@ -17,26 +17,25 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.formLogin()
-                //.loginPage("/members/login")
-                .defaultSuccessUrl("/thymeleaf/ex07")
-                //.usernameParameter("email")
-                //.failureUrl("/members/login/error")
+                .loginPage("/member/login")                                 // 로그인 페이지
+                .defaultSuccessUrl("/")                                     // 성공 시 이동할 페이지
+                .usernameParameter("email")                                 // 로그인에 사용할 파라미터
+                .failureUrl("/member/login/error")      // 실패 시 이동할 페이지
                 .and()
                 .logout()
-                //.logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
-                .logoutSuccessUrl("/")
-        ;
+                .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout")) // 로그아웃 페이지
+                .logoutSuccessUrl("/");                                        // 로그아웃 성공 시 이동할 페이지
+
 
         http.authorizeRequests()
                 .mvcMatchers("/css/**", "/js/**", "/img/**").permitAll()
                 .mvcMatchers("/", "/thymeleaf/**", "/item/**", "/member/**").permitAll()
                 //.mvcMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-        ;
+                .anyRequest().authenticated();
 
         http.exceptionHandling()
-                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-        ;
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+
         return http.build();
     }
 
