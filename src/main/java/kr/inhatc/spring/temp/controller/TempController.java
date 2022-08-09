@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController  // @Controller + @ResponseBody
 public class TempController {
 
-    @GetMapping(value = "/")
+    //@GetMapping(value = "/")
     public String HelloWorld(){
         return "Hello World";
     }

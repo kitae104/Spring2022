@@ -113,6 +113,12 @@
             <version>${spring-security.version}</version>
         </dependency>
 
+        <!-- 폼 데이터 검증 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
