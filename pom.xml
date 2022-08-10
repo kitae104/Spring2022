@@ -106,6 +106,12 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!-- 로그인 처리 -->
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+        </dependency>
+
         <!-- 로그인 테스트 -->
         <dependency>
             <groupId>org.springframework.security</groupId>
