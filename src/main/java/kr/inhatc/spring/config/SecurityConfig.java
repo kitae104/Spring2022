@@ -2,6 +2,8 @@ package kr.inhatc.spring.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
@@ -26,11 +28,11 @@ public class SecurityConfig {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout")) // 로그아웃 페이지
                 .logoutSuccessUrl("/");                                        // 로그아웃 성공 시 이동할 페이지
 
-
+          // 페이지 접근에 대한 인증 처리
         http.authorizeRequests()
                 .mvcMatchers("/css/**", "/js/**", "/img/**").permitAll()
                 .mvcMatchers("/", "/thymeleaf/**", "/item/**", "/member/**").permitAll()
-                //.mvcMatchers("/admin/**").hasRole("ADMIN")
+                .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
 
         http.exceptionHandling()

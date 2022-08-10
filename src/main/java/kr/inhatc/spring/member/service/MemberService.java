@@ -44,11 +44,14 @@ public class MemberService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Member member = memberRepository.findByEmail(email);
-        System.out.println("===========>" + member);
-        if(member != null){
+        System.out.println("===========>" + member.getEmail());
+
+        if(member == null){
+            System.out.println("1111");
             throw new UsernameNotFoundException(email); // 해당 사용자가 없는 경우
         }
 
+        System.out.println("===========>" + member.getEmail() + ", " + member.getRole().toString() );
         return User.builder()                       // User 객체 생성하기
                 .username(member.getEmail())
                 .password(member.getPassword())

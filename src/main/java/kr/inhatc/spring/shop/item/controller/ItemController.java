@@ -11,5 +11,8 @@ import java.time.LocalDateTime;
 @Controller
 public class ItemController {
 
-
+    @GetMapping(value = "/admin/item/new")
+    public String itemForm(){
+        return "item/itemForm";
+    }
 }
