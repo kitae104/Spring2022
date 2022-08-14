@@ -1,6 +1,7 @@
 package kr.inhatc.spring.shop.cart.entity;
 
 import kr.inhatc.spring.shop.item.entity.Item;
+import kr.inhatc.spring.utils.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name="cart_item")
-public class CartItem {
+public class CartItem extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -21,12 +22,12 @@ public class CartItem {
     private Long id;
 
     // 하나의 바구니에는 여러개의 상품을 담을 수 있음
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")   // FK로 사용
     private Cart cart;
 
     // 하나의 상품은 여러 장바구니에 담길 수 있음
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")   // FK로 사용
     private Item item;
 

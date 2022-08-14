@@ -2,6 +2,7 @@ package kr.inhatc.spring.member.entity;
 
 import kr.inhatc.spring.constant.Role;
 import kr.inhatc.spring.member.dto.MemberFormDto;
+import kr.inhatc.spring.utils.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,7 +18,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @Column(name = "member_id")
