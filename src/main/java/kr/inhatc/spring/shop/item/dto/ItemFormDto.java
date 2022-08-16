@@ -2,6 +2,8 @@ package kr.inhatc.spring.shop.item.dto;
 
 import kr.inhatc.spring.shop.constant.ItemSellStatus;
 import kr.inhatc.spring.shop.item.entity.Item;
+import lombok.Getter;
+import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
 import javax.persistence.Column;
@@ -13,6 +15,8 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class ItemFormDto {
 
     private Long id;       //상품 코드
