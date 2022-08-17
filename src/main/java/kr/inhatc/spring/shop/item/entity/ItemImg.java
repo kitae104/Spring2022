@@ -1,10 +1,14 @@
 package kr.inhatc.spring.shop.item.entity;
 
 import kr.inhatc.spring.utils.audit.entity.BaseEntity;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "item_img")
 public class ItemImg extends BaseEntity {
 
