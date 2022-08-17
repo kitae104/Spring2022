@@ -2,7 +2,7 @@ package kr.inhatc.spring.member.entity;
 
 import kr.inhatc.spring.constant.Role;
 import kr.inhatc.spring.member.dto.MemberFormDto;
-import kr.inhatc.spring.utils.entity.BaseEntity;
+import kr.inhatc.spring.utils.audit.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -1,4 +1,4 @@
-package kr.inhatc.spring.utils.entity;
+package kr.inhatc.spring.utils.audit.entity;
 
 import lombok.Getter;
 import lombok.Setter;

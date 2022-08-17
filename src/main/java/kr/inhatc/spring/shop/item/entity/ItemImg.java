@@ -1,7 +1,6 @@
 package kr.inhatc.spring.shop.item.entity;
 
-import kr.inhatc.spring.utils.entity.BaseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import kr.inhatc.spring.utils.audit.entity.BaseEntity;
 
 import javax.persistence.*;
 

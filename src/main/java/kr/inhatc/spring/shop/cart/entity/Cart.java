@@ -1,7 +1,7 @@
 package kr.inhatc.spring.shop.cart.entity;
 
 import kr.inhatc.spring.member.entity.Member;
-import kr.inhatc.spring.utils.entity.BaseEntity;
+import kr.inhatc.spring.utils.audit.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

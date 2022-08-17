@@ -1,12 +1,11 @@
 package kr.inhatc.spring.shop.order.entity;
 
 import kr.inhatc.spring.shop.item.entity.Item;
-import kr.inhatc.spring.utils.entity.BaseEntity;
+import kr.inhatc.spring.utils.audit.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter

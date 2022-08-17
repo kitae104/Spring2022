@@ -1,13 +1,12 @@
 package kr.inhatc.spring.shop.item.entity;
 
 import kr.inhatc.spring.shop.constant.ItemSellStatus;
-import kr.inhatc.spring.utils.entity.BaseEntity;
+import kr.inhatc.spring.utils.audit.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "item")
