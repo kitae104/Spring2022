@@ -29,9 +29,9 @@ public class ItemService {
     /**
      * 아이템 저장하기 <br/>
      * 상품등록, 이미지 등록
-     * @param itemFormDto
-     * @param itemImgFileList
-     * @return
+     * @param itemFormDto 폼에서 받은 item 정보
+     * @param itemImgFileList 파일 리스트
+     * @return 생성된 아이템 번호
      * @throws Exception
      */
     public Long saveItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList) throws Exception {

@@ -19,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 //@TestPropertySource(locations = "classpath:application-test.properties")
 class MemberServiceTest {
 
+    // JUnit5에서는 @RequiredArgsConstructor 불가
+    // 의존성 주입의 타입이 정해져 있어 @Autowired만 사용이 가능.
     @Autowired
     private MemberService memberService;
 
