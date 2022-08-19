@@ -1,6 +1,7 @@
 package kr.inhatc.spring.shop.item.entity;
 
 import kr.inhatc.spring.shop.constant.ItemSellStatus;
+import kr.inhatc.spring.shop.item.dto.ItemFormDto;
 import kr.inhatc.spring.utils.audit.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,4 +40,16 @@ public class Item extends BaseEntity {
 //    private LocalDateTime regTime;  // 등록 시간
 //
 //    private LocalDateTime updateTime;   // 수정 시간
+
+    /**
+     * 상품 업데이트
+     * @param itemFormDto
+     */
+    public void updateItem(ItemFormDto itemFormDto){
+    	this.itemNm = itemFormDto.getItemNm();
+    	this.price = itemFormDto.getPrice();
+        this.stockNumber = itemFormDto.getStockNumber();
+        this.itemDetail = itemFormDto.getItemDetail();
+        this.itemSellStatus = itemFormDto.getItemSellStatus();
+    }
 }
