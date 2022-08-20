@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration debug="true">
+    <!-- Appender:로그를 어디에 출력하지 결정  -->
+    <!-- DEBUG 용 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+
+            <!--<Pattern>%d %5p [%c]\n %m%n</Pattern> -->
+            <Pattern>[%5p][%c] %m%n</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- INFO 용 -->
+    <appender name="console-infolog" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d %5p %m%n </Pattern>
+        </encoder>
+    </appender>
+
+    <!-- 로거 -->
+    <logger name="board" level="DEBUG" appender-ref="console" />
+
+    <!-- SQL 보여주기 -->
+    <logger name="jdbc.sqlonly" level="INFO" appender-ref="console-infolog" />
+
+    <!-- 조회 결과를 테이블로 보여주기 -->
+    <logger name="jdbc.resultsettable" level="INFO" appender-ref="console-infolog" />
+    <logger name="org.springframework" level="error" />
+    <logger name="org.springframework.jdbc" level="error" />
+
+    <!-- 루트 로거 -->
+    <root level="DEBUG">
+        <appender-ref ref="console" />
+    </root>
+</configuration>

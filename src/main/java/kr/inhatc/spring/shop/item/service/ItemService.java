@@ -2,11 +2,15 @@ package kr.inhatc.spring.shop.item.service;
 
 import kr.inhatc.spring.shop.item.dto.ItemFormDto;
 import kr.inhatc.spring.shop.item.dto.ItemImgDto;
+import kr.inhatc.spring.shop.item.dto.ItemSearchDto;
 import kr.inhatc.spring.shop.item.entity.Item;
 import kr.inhatc.spring.shop.item.entity.ItemImg;
 import kr.inhatc.spring.shop.item.repository.ItemImgRepository;
 import kr.inhatc.spring.shop.item.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -98,4 +102,16 @@ public class ItemService {
         return item.getId();
     }
 
+    /**
+     * 상품 조회 조건과 페이지 정보를 파라미터로 받아서 상품 데이터를 조회하기  
+     * @param itemSearchDto 상품 조회 조건 
+     * @param pageable 페이지 정보 
+     * @return
+     */
+    @Transactional(readOnly = true)	// 데이터의 수정 없이 사용할 것이기 때문에 readOnly로 최적화 수행
+    public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable)
+    {
+    	return itemRepository.getAdminItemPage(itemSearchDto, pageable);
+    }
+    
 }
