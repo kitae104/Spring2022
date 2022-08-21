@@ -3,6 +3,7 @@ package kr.inhatc.spring.shop.item.controller;
 import kr.inhatc.spring.shop.item.dto.ItemDto;
 import kr.inhatc.spring.shop.item.dto.ItemFormDto;
 import kr.inhatc.spring.shop.item.dto.ItemSearchDto;
+import kr.inhatc.spring.shop.item.dto.MainItemDto;
 import kr.inhatc.spring.shop.item.entity.Item;
 import kr.inhatc.spring.shop.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -145,11 +146,42 @@ public class ItemController
 		Page<Item> items = itemService.getAdminItemPage(itemSearchDto, pageable);
 		
 		// 페이지에 전달할 정보 
-		model.addAttribute("items", items);                     // 상품 정보		
-		
+		model.addAttribute("items", items);                     // 상품 정보			
         model.addAttribute("itemSearchDto", itemSearchDto);     // 페이지 검색 조건
         model.addAttribute("maxPage", 5);         				//  최대 5개 페이지 번호
         
 		return "item/itemManage";
+	}
+	
+	/**
+	 * 메인 페이지로 이동하기 
+	 * @param itemSearchDto
+	 * @param page
+	 * @param model
+	 * @return
+	 */
+	@GetMapping(value = "/")
+	public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model) {
+		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
+		Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
+		
+		// 페이지에 전달할 정보 
+		model.addAttribute("items", items);                     // 상품 정보			
+		model.addAttribute("itemSearchDto", itemSearchDto);     // 페이지 검색 조건
+		model.addAttribute("maxPage", 5);         				//  최대 5개 페이지 번호
+		return "main";
+	}
+	
+	/**
+	 * 상품 상세 페이지로 이동 
+	 * @param model
+	 * @param itemId
+	 * @return
+	 */
+	@GetMapping(value = "/item/{itemId}")
+	public String itemDetail(Model model, @PathVariable("itemId")Long itemId) {
+		ItemFormDto itemFormDto = itemService.getItemDetail(itemId);
+		model.addAttribute("item", itemFormDto);
+		return "item/itemDetail";
 	}
 }

@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 
-    @GetMapping(value = "/")
-    public String main(){
-        return "main";
-    }
+	// 6장 이후 --> kr.inhatc.spring.shop.item.controller.ItemController의 main() 으로 이동 
+//    @GetMapping(value = "/")
+//    public String main(){
+//        return "main";
+//    }
 }

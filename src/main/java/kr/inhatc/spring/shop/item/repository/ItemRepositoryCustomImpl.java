@@ -1,6 +1,7 @@
 package kr.inhatc.spring.shop.item.repository;
 
 import static kr.inhatc.spring.shop.item.entity.QItem.item;
+import static kr.inhatc.spring.shop.item.entity.QItemImg.itemImg;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,8 +20,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import kr.inhatc.spring.shop.constant.ItemSellStatus;
 import kr.inhatc.spring.shop.item.dto.ItemSearchDto;
+import kr.inhatc.spring.shop.item.dto.MainItemDto;
+import kr.inhatc.spring.shop.item.dto.QMainItemDto;
 import kr.inhatc.spring.shop.item.entity.Item;
-import kr.inhatc.spring.shop.item.entity.QItem;
 
 public class ItemRepositoryCustomImpl implements ItemRepositoryCustom
 {
@@ -124,6 +126,35 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom
 		// long total = results.getTotal();
 		// return new PageImpl<>(content, pageable, total);
 		return new PageImpl<>(content, pageable, content.size());
+	}
+
+	/**
+	 * 검색어가 null이 아니면 해당 검색어가 포함되는 상품을 조회하는 조건을 반환
+	 * @param searchQuery
+	 * @return
+	 */
+	private BooleanExpression itemNmLike(String searchQuery) {
+		return StringUtils.isEmpty(searchQuery) ? null : item.itemNm.like("%" + searchQuery + "%");
+	}
+	
+	@Override
+	public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable)
+	{
+		List<MainItemDto> results = queryFactory
+				.select(
+					// @QueryProjection을 사용하면 DTO로 바로 조회 가능
+					// 엔티티 조회후 DTO로 변환하는 과정을 줄일 수 있음
+					new QMainItemDto(item.id, item.itemNm, item.itemDetail, itemImg.imgUrl, item.price)
+				)
+				.from(itemImg)
+				.join(itemImg.item, item)			// itemImg와 item을 내부 조인 수행함
+				.where(itemImg.repimgYn.eq("Y"))	// 상품 이미지의 경우엔 대표 상품만 불러옴
+				.where(itemNmLike(itemSearchDto.getSearchQuery()))
+				.orderBy(item.id.desc())
+				.offset(pageable.getOffset())
+				.limit(pageable.getPageSize())
+				.fetch();
+		return new PageImpl<>(results, pageable, results.size());
 	}
 
 }
