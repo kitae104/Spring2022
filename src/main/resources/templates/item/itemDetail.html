@@ -27,6 +27,46 @@
 	      var totalPrice = price * count;
 	      $("#totalPrice").html(totalPrice + '원');
 	  }  
+	  
+	  // 7장 이후에 작성
+	  function order(){
+		  // POST 방식에서는 CSRF 토큰 값 필요 
+		  var token = $("meta[name='_csrf']").attr("content");
+		  var header = $("meta[name='_csrf_header']").attr("content");
+		  
+		  var url = "/order";
+		  var paramData = {							// 전달할 데이터 객체 
+			itemId : $("#itemId").val(),
+		  	count: $("#count").val()
+		  };
+		  
+		  var param = JSON.stringify(paramData);	//주문 데이터를 JSON으로 변경 
+		  
+		  $.ajax({
+			 url	: url,
+			 type	: "POST",
+			 contentType: "application/json",		// 데이터 타입 json 으로 설정 
+			 data	: param,
+			 beforeSend	: function(xhr){
+				 // 데이터를 보내기 전에 헤더에 csrf 값을 설정
+				 xhr.sendRequestHeader(header, token);
+			 },
+			 dataType: "json",
+			 cache	: false,
+			 success: function(result, status){			// 주문 로직 호출 성공시
+				 alert("주문이 완료 되었습니다.");
+				 location.href = "/";
+			 },
+			 error	: function(jqXHR, status, error){
+				 if(jqXHR.status == '401'){
+                     alert('로그인 후 이용해주세요');
+                     location.href='/member/login';		// 로그인 페이지로 이동 
+                 } else{
+                     alert(jqXHR.responseText);			// 주문시 에러 발생하면 해당 메시지 출력 
+                 }
+			 }
+		  });
+	  }
   </script>
 
 </th:block>
@@ -70,10 +110,10 @@
         
         <div class="wd50">
         	<span th:if="${item.itemSellStatus == T(kr.inhatc.spring.shop.constant.ItemSellStatus).SELL}" class="badge badge-primary mgb-15">
-                판매중1
+                판매중
             </span>
             <span th:unless="${item.itemSellStatus == T(kr.inhatc.spring.shop.constant.ItemSellStatus).SELL}" class="badge btn-danger mgb-15" >
-                품절1
+                품절
             </span>	
             <div class="h4" th:text="${item.itemNm}"></div>
             

@@ -64,7 +64,7 @@
                 <!-- 현재 상품의 판매 상태(현재 T()에 대한 == 이 안되는 상태!! -->
                 <!-- <td th:text="${item.itemSellStatus == T(kr.inhatc.spring.shop.constant.ItemSellStatus).SELL} ? '판매중' : '품절'"></td> -->                
                 <!-- <td th:text="${T(kr.inhatc.spring.shop.constant.ItemSellStatus).SELL}"></td> -->               
-                <td th:text="${item.itemSellStatus == 0} ? '판매중' : '품절'"></td>                
+                <td th:text="${item.itemSellStatus == T(kr.inhatc.spring.shop.constant.ItemSellStatus).SELL} ? '판매중' : '품절'"></td>            
                 <td th:text="${item.createdBy}"></td>
                 <td th:text="${item.regTime}"></td>
             </tr>
