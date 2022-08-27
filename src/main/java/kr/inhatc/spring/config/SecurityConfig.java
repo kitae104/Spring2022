@@ -31,7 +31,7 @@ public class SecurityConfig {
           // 페이지 접근에 대한 인증 처리
         http.authorizeRequests()
                 .mvcMatchers("/css/**", "/js/**", "/img/**").permitAll()
-                .mvcMatchers("/", "/thymeleaf/**", "/log/**", "/item/**", "/member/**").permitAll()
+                .mvcMatchers("/", "/thymeleaf/**", "/log/**", "/item/**", "/member/**", "/order/**").permitAll()
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
 

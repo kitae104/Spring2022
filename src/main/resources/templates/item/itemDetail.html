@@ -49,7 +49,7 @@
 			 data	: param,
 			 beforeSend	: function(xhr){
 				 // 데이터를 보내기 전에 헤더에 csrf 값을 설정
-				 xhr.sendRequestHeader(header, token);
+				 xhr.setRequestHeader(header, token);
 			 },
 			 dataType: "json",
 			 cache	: false,
@@ -109,10 +109,10 @@
         </div>	
         
         <div class="wd50">
-        	<span th:if="${item.itemSellStatus == T(kr.inhatc.spring.shop.constant.ItemSellStatus).SELL}" class="badge badge-primary mgb-15">
+        	<span th:if="${item.itemSellStatus.toString.equals(T(kr.inhatc.spring.shop.constant.ItemSellStatus).SELL.toString)}" class="badge bg-primary mgb-15">
                 판매중
             </span>
-            <span th:unless="${item.itemSellStatus == T(kr.inhatc.spring.shop.constant.ItemSellStatus).SELL}" class="badge btn-danger mgb-15" >
+            <span th:unless="${item.itemSellStatus.toString.equals(T(kr.inhatc.spring.shop.constant.ItemSellStatus).SELL.toString)}" class="badge bg-danger mgb-15" >
                 품절
             </span>	
             <div class="h4" th:text="${item.itemNm}"></div>
@@ -139,13 +139,13 @@
                 <h3 name="totalPrice" id="totalPrice" class="font-weight-bold"></h3>
             </div>
             
-            <div th:if="${item.itemSellStatus == T(kr.inhatc.spring.shop.constant.ItemSellStatus).SELL}" class="text-right">
+            <div th:if="${item.itemSellStatus.toString.equals(T(kr.inhatc.spring.shop.constant.ItemSellStatus).SELL.toString)}" class="text-right">
                 <button type="button" class="btn btn-light border border-primary btn-lg" onclick="addCart()">장바구니 담기</button>
                 <button type="button" class="btn btn-primary btn-lg" onclick="order()">주문하기</button>
             </div>
             
-            <div th:unless="${item.itemSellStatus == T(kr.inhatc.spring.shop.constant.ItemSellStatus).SELL}" class="text-right">
-                <button type="button" class="btn btn-danger btn-lg">품절</button>
+            <div th:unless="${item.itemSellStatus.toString.equals(T(kr.inhatc.spring.shop.constant.ItemSellStatus).SELL.toString)}" class="text-right">
+                <button type="button" class="btn btn-danger btn-lg">품절</button> 
             </div>
         </div>
 	</div>

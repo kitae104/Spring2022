@@ -84,7 +84,6 @@ public class ItemController
 		try
 		{
 			ItemFormDto itemFormDto = itemService.getItemDetail(itemId); // 상품 상세 정보 조회
-			log.info("===========> " + itemFormDto);
 			model.addAttribute("itemFormDto", itemFormDto); // 뷰로 조회된 정보 전달
 		} 
 		catch (EntityNotFoundException e)
@@ -138,8 +137,7 @@ public class ItemController
 	public String itemManage(ItemSearchDto itemSearchDto, 
 							@PathVariable("page") Optional<Integer> page, 
 							Model model)
-	{	
-		log.info("==============> 상세 내용으로 이동 ");
+	{			
 		// URL 경로에 페이지 번호가 있으면 해당 페이지를 조회하도록 세팅하고, 
 		// 없으면 0 페이지 조회, 맨뒤는 사이즈
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
@@ -178,7 +176,7 @@ public class ItemController
 	 * @param itemId
 	 * @return
 	 */
-	@GetMapping(value = "/item/{itemId}")
+	@GetMapping(value = "/item/{itemId}") 
 	public String itemDetail(Model model, @PathVariable("itemId")Long itemId) {
 		ItemFormDto itemFormDto = itemService.getItemDetail(itemId);
 		model.addAttribute("item", itemFormDto);
