@@ -93,6 +93,10 @@ public class Order extends BaseEntity
 		return order;
 	}
 
+	/**
+	 * 전체 금액을 계산해서 반환하는 기능
+	 * @return
+	 */
 	public int getTotalPrice()
 	{
 		int totalPrice = 0; 
@@ -102,5 +106,18 @@ public class Order extends BaseEntity
 			totalPrice += orderItem.getTotalPrice();
 		}
 		return totalPrice;
+	}
+	
+	/**
+	 * 주문 취소 시 주문 수량을 재고에 더해주는 로직과 주문 상태를 취소 상태로 
+	 * 바꿔주는 기능 
+	 */
+	public void cancelOrder() {
+		this.orderStatus = OrderStatus.CANCEL;
+		
+		for (OrderItem orderItem : orderItems)
+		{
+			orderItem.cancel();
+		}
 	}
 }

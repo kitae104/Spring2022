@@ -79,5 +79,12 @@ public class Item extends BaseEntity
 		this.stockNumber = restStock;	// 남은 재고를 현재의 재고로 수정 
 	}
 	
-	
+	/** 
+	 * 주문할 때 상품 재고를 감소시켰던 만큼 다시 증가시키는 기능 
+	 * @param stockNumber
+	 */
+	public void addStock(int stockNumber)
+	{
+		this.stockNumber += stockNumber;
+	}
 }

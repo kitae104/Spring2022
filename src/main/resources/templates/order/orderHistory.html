@@ -18,7 +18,7 @@
 
             var url = "/order/" + orderId + "/cancel";
             var paramData = {
-                orderId : orderId,
+                orderId : orderId,			// 취소할 주문 번호 
             };
 
             var param = JSON.stringify(paramData);
@@ -34,7 +34,7 @@
                 },
                 dataType : "json",
                 cache   : false,
-                success  : function(result, status){
+                success  : function(result, status){		// 정상 취소 된 경우 현재 페이지로 다시 이동 
                     alert("주문이 취소 되었습니다.");
                     location.href='/orders/' + [[${page}]];
                 },
