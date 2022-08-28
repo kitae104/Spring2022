@@ -1,11 +1,11 @@
 package kr.inhatc.spring.shop.item.repository;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import kr.inhatc.spring.shop.constant.ItemSellStatus;
-import kr.inhatc.spring.shop.item.entity.Item;
-import kr.inhatc.spring.shop.item.entity.QItem;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +15,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.thymeleaf.util.StringUtils;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.time.LocalDateTime;
-import java.util.List;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+
+import kr.inhatc.spring.shop.constant.ItemSellStatus;
+import kr.inhatc.spring.shop.item.entity.Item;
+import kr.inhatc.spring.shop.item.entity.QItem;
 
 @SpringBootTest
 //@TestPropertySource(locations = "classpath:application-test.properties")

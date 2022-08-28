@@ -1,12 +1,12 @@
 package kr.inhatc.spring.shop.item.service;
 
-import kr.inhatc.spring.shop.constant.ItemSellStatus;
-import kr.inhatc.spring.shop.item.dto.ItemFormDto;
-import kr.inhatc.spring.shop.item.entity.Item;
-import kr.inhatc.spring.shop.item.entity.ItemImg;
-import kr.inhatc.spring.shop.item.repository.ItemImgRepository;
-import kr.inhatc.spring.shop.item.repository.ItemRepository;
-import lombok.RequiredArgsConstructor;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.EntityNotFoundException;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +16,12 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-
-import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import kr.inhatc.spring.shop.constant.ItemSellStatus;
+import kr.inhatc.spring.shop.item.dto.ItemFormDto;
+import kr.inhatc.spring.shop.item.entity.Item;
+import kr.inhatc.spring.shop.item.entity.ItemImg;
+import kr.inhatc.spring.shop.item.repository.ItemImgRepository;
+import kr.inhatc.spring.shop.item.repository.ItemRepository;
 
 @SpringBootTest
 @Transactional

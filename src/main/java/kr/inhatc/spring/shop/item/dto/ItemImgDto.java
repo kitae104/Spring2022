@@ -1,10 +1,10 @@
 package kr.inhatc.spring.shop.item.dto;
 
+import org.modelmapper.ModelMapper;
+
 import kr.inhatc.spring.shop.item.entity.ItemImg;
 import lombok.Getter;
 import lombok.Setter;
-import org.modelmapper.ModelMapper;
-import org.springframework.ui.Model;
 
 /**
  * 상품 저장 후 상품 이미지에 대한 데이터를 전달한 DTO 클래스

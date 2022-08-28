@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.inhatc.spring.member.entity.Member;
 import kr.inhatc.spring.member.repository.MemberRepository;
 import kr.inhatc.spring.shop.constant.ItemSellStatus;
-import kr.inhatc.spring.shop.constant.OrderStatus;
 import kr.inhatc.spring.shop.item.entity.Item;
 import kr.inhatc.spring.shop.item.repository.ItemRepository;
 import kr.inhatc.spring.shop.order.dto.OrderDto;

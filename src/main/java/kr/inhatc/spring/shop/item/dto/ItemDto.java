@@ -1,9 +1,9 @@
 package kr.inhatc.spring.shop.item.dto;
 
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 /**
  * DTO를 사용하는 이유

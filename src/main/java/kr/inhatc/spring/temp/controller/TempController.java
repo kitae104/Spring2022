@@ -1,9 +1,9 @@
 package kr.inhatc.spring.temp.controller;
 
-import kr.inhatc.spring.temp.dto.TempDto;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import kr.inhatc.spring.temp.dto.TempDto;
 
 @RestController  // @Controller + @ResponseBody
 public class TempController {

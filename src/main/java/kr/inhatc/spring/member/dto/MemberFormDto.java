@@ -1,12 +1,13 @@
 package kr.inhatc.spring.member.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 회원 가입 화면으로부터 넘어오는 가입 정보를 담는 DTO

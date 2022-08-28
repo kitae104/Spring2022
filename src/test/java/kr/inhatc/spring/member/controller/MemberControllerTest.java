@@ -1,8 +1,9 @@
 package kr.inhatc.spring.member.controller;
 
-import kr.inhatc.spring.member.dto.MemberFormDto;
-import kr.inhatc.spring.member.entity.Member;
-import kr.inhatc.spring.member.service.MemberService;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,9 @@ import org.springframework.security.test.web.servlet.response.SecurityMockMvcRes
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.transaction.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import kr.inhatc.spring.member.dto.MemberFormDto;
+import kr.inhatc.spring.member.entity.Member;
+import kr.inhatc.spring.member.service.MemberService;
 
 @SpringBootTest
 @AutoConfigureMockMvc

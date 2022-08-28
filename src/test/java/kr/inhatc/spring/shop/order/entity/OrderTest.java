@@ -1,5 +1,19 @@
 package kr.inhatc.spring.shop.order.entity;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.time.LocalDateTime;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import kr.inhatc.spring.member.entity.Member;
 import kr.inhatc.spring.member.repository.MemberRepository;
 import kr.inhatc.spring.shop.constant.ItemSellStatus;
@@ -7,20 +21,6 @@ import kr.inhatc.spring.shop.item.entity.Item;
 import kr.inhatc.spring.shop.item.repository.ItemRepository;
 import kr.inhatc.spring.shop.order.repository.OrderItemRepository;
 import kr.inhatc.spring.shop.order.repository.OrderRepository;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-
-import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

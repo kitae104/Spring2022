@@ -1,14 +1,13 @@
 package kr.inhatc.spring.shop.item.repository;
 
-import kr.inhatc.spring.shop.item.entity.Item;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
+import kr.inhatc.spring.shop.item.entity.Item;
 
 public interface ItemRepository extends JpaRepository<Item, Long>, 
 									QuerydslPredicateExecutor<Item>, ItemRepositoryCustom

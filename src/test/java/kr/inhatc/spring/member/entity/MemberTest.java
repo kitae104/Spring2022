@@ -1,8 +1,10 @@
 package kr.inhatc.spring.member.entity;
 
-import kr.inhatc.spring.member.dto.MemberFormDto;
-import kr.inhatc.spring.member.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
+import kr.inhatc.spring.member.dto.MemberFormDto;
+import kr.inhatc.spring.member.repository.MemberRepository;
 
 @SpringBootTest
 @Transactional
