@@ -56,10 +56,18 @@ public class CartItem extends BaseEntity {
         return cartItem;
     }
 
+    /**
+     * 장바구니에 담은 수량을 증가시키는 메소드
+     * @param count
+     */
     public void addCount(int count){
         this.count += count;
     }
 
+    /**
+     * 현재 장바구니에 담겨 있는 수량을 변경하는 메소드
+     * @param count
+     */
     public void updateCount(int count){
         this.count = count;
     }
