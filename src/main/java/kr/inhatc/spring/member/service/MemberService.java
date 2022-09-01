@@ -48,7 +48,6 @@ public class MemberService implements UserDetailsService {
         System.out.println("===========>" + member.getEmail());
 
         if(member == null){
-            System.out.println("1111");
             throw new UsernameNotFoundException(email); // 해당 사용자가 없는 경우
         }
 

@@ -36,7 +36,7 @@
 		// 장바구니에 들어있는 상품의 수량을 변경 시 상품의 가격과 상품의 수향을 곱해서 상품 금액을 변경
 		// 변경된 총 주문 금액을 계산하기 위해 마지막에 getOrderTotalPrice()을 호출
 		function changeCount(obj){
-			let count = obj.value;
+			let count = obj.value;			
 			let cartItemId = obj.id.split('_')[1];
 			let price = $("#price_" + cartItemId).data("price");
 			let totalPrice = count * price;
@@ -58,10 +58,10 @@
 
 		function updateCartItemCount(cartItemId, count){
 			// POST 방식에서는 CSRF 토큰 값 필요
-			var token = $("meta[name='_csrf']").attr("content");
-			var header = $("meta[name='_csrf_header']").attr("content");
+			let token = $("meta[name='_csrf']").attr("content");
+			let header = $("meta[name='_csrf_header']").attr("content");
 
-			var url = "/cartItem/" + cartItemId + "?count=" + count;
+			let url = "/cartItem/" + cartItemId + "?count=" + count;
 
 			$.ajax({
 				url	: url,
@@ -75,6 +75,86 @@
 				cache	: false,
 				success: function(result, status){			// 주문 로직 호출 성공시
 					console.log("cartItem count update success.");
+				},
+				error	: function(jqXHR, status, error){
+					if(jqXHR.status == '401'){
+						alert('로그인 후 이용해주세요');
+						location.href='/member/login';		// 로그인 페이지로 이동
+					} else{
+						alert(jqXHR.responseText);			// 주문시 에러 발생하면 해당 메시지 출력
+					}
+				}
+			});
+		}
+
+		function deleteCartItem(obj){
+			let cartItemId = obj.dataset.id;
+			// POST 방식에서는 CSRF 토큰 값 필요
+			let token = $("meta[name='_csrf']").attr("content");
+			let header = $("meta[name='_csrf_header']").attr("content");
+
+			let url = "/cartItem/" + cartItemId;
+
+			$.ajax({
+				url	: url,
+				type	: "DELETE",						// 삭제
+				beforeSend	: function(xhr){
+					// 데이터를 보내기 전에 헤더에 csrf 값을 설정
+					xhr.setRequestHeader(header, token);
+				},
+				dataType: "json",
+				cache	: false,
+				success: function(result, status){			// 주문 로직 호출 성공시
+					location.href = '/cart';
+				},
+				error	: function(jqXHR, status, error){
+					if(jqXHR.status == '401'){
+						alert('로그인 후 이용해주세요');
+						location.href='/member/login';		// 로그인 페이지로 이동
+					} else{
+						alert(jqXHR.responseText);			// 주문시 에러 발생하면 해당 메시지 출력
+					}
+				}
+			});
+		}
+
+		function orders(){
+			// POST 방식에서는 CSRF 토큰 값 필요
+			let token = $("meta[name='_csrf']").attr("content");
+			let header = $("meta[name='_csrf_header']").attr("content");
+
+			let url = "/cart/orders";
+
+			let dataList = new Array();
+			let paramData = new Object();
+
+			// 체크된 장바구니 상품 아이디를 전달하기 위해서 dataList 배열에 장바구니 상품 아이디를
+			// 객체로 만들어서 저장
+			$("input[name=cartChkBox]:checked").each(function() {
+				let cartItemId = $(this).val();
+				let data = new Object();
+				data["cartItemId"] = cartItemId;
+				dataList.push(data);
+			});
+
+			paramData['cartOrderDtoList'] = dataList;
+
+			let param = JSON.stringify(paramData);
+
+			$.ajax({
+				url	: url,
+				type	: "POST",
+				contentType: "application/json",		// 데이터 타입 json 으로 설정
+				data	: param,
+				beforeSend	: function(xhr){
+					// 데이터를 보내기 전에 헤더에 csrf 값을 설정
+					xhr.setRequestHeader(header, token);
+				},
+				dataType: "json",
+				cache	: false,
+				success: function(result, status){			// 주문 로직 호출 성공시
+					alert("주문이 완료 되었습니다.");
+					location.href = "/orders";
 				},
 				error	: function(jqXHR, status, error){
 					if(jqXHR.status == '401'){
@@ -179,7 +259,7 @@
 			총 주문 금액 : <span id="orderTotalPrice" class="text-danger">0원</span>
 		</h2>
 		<div class="text-center mt-3">
-			<button type="button" class="btn btn-primary btn-lg">주문하기</button>
+			<button type="button" class="btn btn-primary btn-lg" onclick="orders()">주문하기</button>
 		</div>
 	</div>
 </div>

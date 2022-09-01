@@ -35,8 +35,7 @@
                     <span sec:authorize="isAuthenticated()">
                       <font color="white">
                           <b>
-                          <!--<span sec:authentication="principal.member.name"></span>-->
-                            홍길동
+                          <span th:text="${user}"></span>
                           </b> 님 &nbsp;
                       </font>
                     </span>

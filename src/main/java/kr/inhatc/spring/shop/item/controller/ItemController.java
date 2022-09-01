@@ -1,5 +1,6 @@
 package kr.inhatc.spring.shop.item.controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -161,14 +163,21 @@ public class ItemController
 	 * @return
 	 */
 	@GetMapping(value = "/")
-	public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model) {
+	public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, Principal principal)
+	{
+		if(principal != null) {
+			log.info("==================> " + principal.getName());
+			model.addAttribute("user", principal.getName());
+		}
+
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
 		Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
 		
 		// 페이지에 전달할 정보 
 		model.addAttribute("items", items);                     // 상품 정보			
 		model.addAttribute("itemSearchDto", itemSearchDto);     // 페이지 검색 조건
-		model.addAttribute("maxPage", 5);         				//  최대 5개 페이지 번호
+		model.addAttribute("maxPage", 5);          //  최대 5개 페이지 번호
+
 		return "main";
 	}
 	
