@@ -41,6 +41,8 @@ secrets.yml
 .gradletasknamecache
 .sts4-cache
 
+*.class
+
 # Eclipse
 .classpath
 .project
