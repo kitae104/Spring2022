@@ -1,0 +1,34 @@
+{
+	"folders": {},
+	"connections": {
+		"mysql8-1832364a9f9-3d4ec71c6dce38a8": {
+			"provider": "mysql",
+			"driver": "mysql8",
+			"name": "edoTest",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"host": "localhost",
+				"port": "3306",
+				"database": "edoTest",
+				"url": "jdbc:mysql://localhost:3306/edoTest",
+				"configurationType": "MANUAL",
+				"home": "C:\\Program Files\\MySQL\\MySQL Server 8.0",
+				"type": "dev",
+				"auth-model": "native",
+				"handlers": {}
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"auto-close-transactions": false
+		}
+	}
+}
