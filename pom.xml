@@ -110,6 +110,13 @@
             <version>5.0.0</version>
         </dependency>
 
+		<!-- SQL 정보 확인 -->
+		<dependency>
+			<groupId>com.github.gavlyukovskiy</groupId>
+			<artifactId>p6spy-spring-boot-starter</artifactId>
+			<version>1.8.1</version>
+		</dependency>
+
         <!-- 시큐리티 : 임시 security user 추가 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
