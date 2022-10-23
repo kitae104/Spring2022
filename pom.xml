@@ -74,8 +74,7 @@
 		<!-- 데이터베이스 관련 (MySQL)-->
 		<dependency>
 			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.30</version>
+			<artifactId>mysql-connector-java</artifactId>			
 		</dependency>
 
 		<!-- 데이터베이스 관련 (h2)-->
@@ -92,21 +91,18 @@
 
 		<dependency>
 			<groupId>jakarta.persistence</groupId>
-			<artifactId>jakarta.persistence-api</artifactId>
-			<version>2.2.3</version>
+			<artifactId>jakarta.persistence-api</artifactId>			
 		</dependency>
 
 		<!-- querydsl -->
 		<dependency>
 			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-jpa</artifactId>
-			<version>5.0.0</version>
+			<artifactId>querydsl-jpa</artifactId>			
 		</dependency>
 
 		<dependency>
 			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-apt</artifactId>
-			<version>5.0.0</version>
+			<artifactId>querydsl-apt</artifactId>			
 		</dependency>
 
 		<!-- SQL 정보 확인 -->

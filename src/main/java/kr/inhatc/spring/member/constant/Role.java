@@ -1,4 +1,4 @@
-package kr.inhatc.spring.constant;
+package kr.inhatc.spring.member.constant;
 
 /**
  * 사용자 권한 설정

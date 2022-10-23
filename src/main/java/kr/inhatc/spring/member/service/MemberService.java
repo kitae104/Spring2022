@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import kr.inhatc.spring.member.entity.Member;
 import kr.inhatc.spring.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Service
+@Log4j2
 @Transactional
 @RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
@@ -51,7 +53,7 @@ public class MemberService implements UserDetailsService {
             throw new UsernameNotFoundException(email); // 해당 사용자가 없는 경우
         }
 
-        System.out.println("===========>" + member.getEmail() + ", " + member.getRole().toString() );
+        log.info("===========>" + member.getEmail() + ", " + member.getRole().toString() );
         return User.builder()                       // User 객체 생성하기
                 .username(member.getEmail())
                 .password(member.getPassword())

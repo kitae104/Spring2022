@@ -25,6 +25,7 @@ import kr.inhatc.spring.files.upload.service.FilesStorageService;
 
 @Controller
 //@CrossOrigin("http://localhost:8001")
+
 public class FilesController {
 
   @Autowired
@@ -44,7 +45,7 @@ public class FilesController {
     }
   }
   
-  @GetMapping("/files")
+  @GetMapping("/files1")
   public ResponseEntity<List<FileInfoDto>> getListFiles(){
 	  List<FileInfoDto> fileInfos = storageService.loadAll().map(path -> {
 		 String fileName = path.getFileName().toString();
@@ -55,14 +56,11 @@ public class FilesController {
 	  return ResponseEntity.status(HttpStatus.OK).body(fileInfos);
   }
   
-  @GetMapping("/files/{filename:.+}")
+  @GetMapping("/files1/{filename:.+}")
   @ResponseBody
   public ResponseEntity<Resource> getFile(@PathVariable String fileName){
 	  Resource file = storageService.load(fileName);
 	  return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, 
 			  "attatchment; filename=\"" + file.getFilename() + "\"").body(file);
-  }
-  
-  
-  
+  }  
 }

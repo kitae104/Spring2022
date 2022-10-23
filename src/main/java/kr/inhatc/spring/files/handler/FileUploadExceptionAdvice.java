@@ -9,7 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import kr.inhatc.spring.files.upload.message.ResponseMessage;
 
-@ControllerAdvice	// 모든 @Controller 즉, 전역에서 발생할 수 있는 예외를 잡아 처리해주는 annotation이다.
+//@ControllerAdvice	// 모든 @Controller 즉, 전역에서 발생할 수 있는 예외를 잡아 처리해주는 annotation이다.
 public class FileUploadExceptionAdvice extends ResponseEntityExceptionHandler
 {
 	@ExceptionHandler(MaxUploadSizeExceededException.class)

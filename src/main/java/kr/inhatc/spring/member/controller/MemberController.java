@@ -1,5 +1,7 @@
 package kr.inhatc.spring.member.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +41,7 @@ public class MemberController {
      * @return
      */
     @PostMapping(value = "/new")
-    public String memberForm(MemberFormDto memberFormDto,
+    public String memberForm(@Valid MemberFormDto memberFormDto,
                              BindingResult bindingResult, Model model){
 
         if(bindingResult.hasErrors()){
