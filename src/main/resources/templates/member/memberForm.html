@@ -38,11 +38,11 @@
       <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fieldError">Incorrect data</p>
     </div>
     <div style="text-align: center" class="mb-3">
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary">Submit</button> 
     </div>
     <!-- CSRF : 사이트간 위조를 방지하기 위해 모든 POST에 추가 -->
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-  </form>
+  </form> 
 </div>
 
 </html>

@@ -29,13 +29,15 @@ public class SecurityConfig {
         http.authorizeRequests()
                 .mvcMatchers("/css/**", "/js/**", "/img/**").permitAll()
                 .mvcMatchers("/", "/thymeleaf/**", "/log/**", "/item/**", "/member/**", "/order/**", "/orders/**").permitAll()
-                .mvcMatchers("/files/**").permitAll()
+                .mvcMatchers("/files/**", "/board/**").permitAll() 
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
 
         http.exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 
+        http.csrf().disable(); 
+        
         return http.build();
     }
 

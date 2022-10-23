@@ -1,7 +1,5 @@
 package kr.inhatc.spring.board.entity;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,16 +9,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import kr.inhatc.spring.board.dto.BoardDto;
 import kr.inhatc.spring.member.entity.Member;
 import kr.inhatc.spring.utils.audit.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED) 
 @Getter
+@Setter
 public class Board extends BaseEntity{
 
     @Id
@@ -30,36 +31,48 @@ public class Board extends BaseEntity{
 
     private String title;               //제목
     private String content;             //내용 - 에디터 변경 처리 
-    
-    private LocalDateTime regDate;      //등록 날짜
-
-    private LocalDateTime uptDate;      //수정 날짜
-
+        
     private Long viewCount;             //조회수
     private String delYn;               //삭제여부
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member member; 
 
+    /**
+     * 수정하기  
+     * @param title
+     * @param content
+     * @return
+     */
     public Board update(String title, String content){
-        this.title = title;
+        this.title = title; 
         this.content = content;
         return this;
     }
 
-    public Board delete(String delYn){
+    /**
+     * 삭제하기 
+     * @param delYn
+     * @return
+     */
+    public Board delete(String delYn){ 
         this.delYn = delYn;
-        return this;
+        return this; 
     }
-
+    
+    /**
+     * 게시글 생성하기
+     * @param boardDto
+     * @param member
+     */  
     @Builder
-    public Board(String title, String content, Member member){
-        this.title = title;
-        this.content = content;
+    public Board(BoardDto boardDto, Member member){ 
+        this.title = boardDto.getTitle();
+        this.content = boardDto.getContent(); 
         this.viewCount = 0L;
         this.delYn = "N";
-        this.member = member;
+        this.member = member; 
     }
 }
 

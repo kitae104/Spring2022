@@ -10,6 +10,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import kr.inhatc.spring.board.dto.BoardDto;
@@ -24,6 +27,9 @@ public class BoardRepositoryImpl implements CustomBoardRepository{
       this.jpaQueryFactory = jpaQueryFactory;
   }
   
+  /**
+   * 게시판 리스트 가져오기 
+   */
   @Override
   public Page<BoardDto> selectBoardList(String searchVal, Pageable pageable) {
     List<BoardDto> content = getBoardMemberDtos(searchVal, pageable);
@@ -35,7 +41,7 @@ public class BoardRepositoryImpl implements CustomBoardRepository{
    * 검색어에 대한 게시판 리스트 가져오기 
    * @param searchVal
    * @param pageable
-   * @return
+   * @return 
    */
   private List<BoardDto> getBoardMemberDtos(String searchVal, Pageable pageable) {
     
@@ -45,10 +51,13 @@ public class BoardRepositoryImpl implements CustomBoardRepository{
             board.title,
             board.content,
             board.viewCount,
-            member.name            
+            member.name,            
+            board.regTime,
+            board.updateTime
          ))
         .from(board)
         .leftJoin(board.member, member)
+        .where(containsSearch(searchVal))
         .orderBy(board.id.desc())               // 최신 정보가 윗쪽으로
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())
@@ -67,9 +76,19 @@ public class BoardRepositoryImpl implements CustomBoardRepository{
     Long count = jpaQueryFactory
         .select(board.count())
         .from(board)
+        .where(containsSearch(searchVal))
         //.leftJoin(board.member, member)   //검색조건 최적화
         .fetchOne();
     return count;
   }
 
+  /**
+   * %키워드% 조회
+   * @param searchVal
+   * @return
+   */
+  private BooleanExpression containsSearch(String searchVal) {    
+    return searchVal != null ? board.title.contains(searchVal) : null;
+  }
+  
 }

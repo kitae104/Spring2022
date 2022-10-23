@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout1}">
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/layout1}">
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
@@ -11,20 +15,127 @@
 
 <!-- 사용자 스크립트 추가 -->
 <th:block layout:fragment="script">
+<script>
+    //체크박스 전체 선택 클릭 이벤트
+    function allChecked(target){
+    
+        //전체 체크박스 버튼
+        const checkbox = document.getElementById('allCheckBox');
 
+        //전체 체크박스 버튼 체크 여부
+        const is_checked = checkbox.checked;
+
+        //전체 체크박스 제외한 모든 체크박스
+        if(is_checked){
+            //체크박스 전체 체크
+            chkAllChecked()
+        } else{
+            //체크박스 전체 해제
+            chkAllUnChecked()
+        }
+    }
+
+    //자식 체크박스 클릭 이벤트
+    function chkClicked(){
+
+        //체크박스 전체개수
+        const allCount = document.querySelectorAll(".chk").length;
+
+        //체크된 체크박스 전체개수
+        const query = 'input[name="chk"]:checked'
+        const selectedElements = document.querySelectorAll(query)
+        const selectedElementsCnt = selectedElements.length;
+
+        //체크박스 전체개수와 체크된 체크박스 전체개수가 같으면 전체 체크박스 체크
+        if(allCount == selectedElementsCnt){
+            document.getElementById('allCheckBox').checked = true;
+        }
+
+        //같지않으면 전체 체크박스 해제
+        else{
+            document.getElementById('allCheckBox').checked = false;
+        }
+    }
+
+    //체크박스 전체 체크
+    function chkAllChecked(){
+        document.querySelectorAll(".chk").forEach(function(v, i) {
+            v.checked = true;
+        });
+    }
+
+    //체크박스 전체 체크 해제
+    function chkAllUnChecked(){
+        document.querySelectorAll(".chk").forEach(function(v, i) {
+            v.checked = false;
+        });
+    }
+
+    // 글삭제 
+    function boardDelete(){
+
+        //체크박스 체크된 항목
+        const query = 'input[name="chk"]:checked'
+        const selectedElements = document.querySelectorAll(query)
+
+        //체크박스 체크된 항목의 개수
+        const selectedElementsCnt = selectedElements.length;
+
+        if(selectedElementsCnt == 0){
+            alert("삭제할 항목을 선택해주세요.");
+            return false;
+        } else{
+            if (confirm("정말로 삭제하시겠습니까?")) {
+                
+                //배열생성
+                const arr = new Array(selectedElementsCnt);
+
+                document.querySelectorAll('input[name="chk"]:checked').forEach(function(v, i) {
+                    arr[i] = v.value;
+                });
+
+               
+
+                const form = document.createElement('form');
+                form.setAttribute('method', 'post');            //Post 메소드 적용
+                form.setAttribute('action', '/board/delete');
+
+                var input1 = document.createElement('input');
+                input1.setAttribute("type", "hidden");
+                input1.setAttribute("name", "boardIds");
+                input1.setAttribute("value", arr);                
+                form.appendChild(input1);
+                
+                // var csrfToken = document.getElementById('csrf').value;
+                // alert(csrfToken);
+                // var csrftoken = document.createElement("input");
+                // csrftoken.setAttribute("type", "hidden");
+                // csrftoken.setAttribute("name", 'csrftoken');
+                // csrftoken.setAttribute("value", csrfToken);
+                // form.appendChild(csrftoken);
+                
+                console.log(form);
+                document.body.appendChild(form);
+                form.submit();                
+            }
+        }
+    }    
+</script>
 </th:block>
 
 <div layout:fragment="content">
     
     <nav class="container">
-        <h1>게시판 리스트</h1>
+        <h1>게시판 리스트</h1>        
         <br>
+        <!-- 페이지 번호와 키워드를 함께 컨트롤러로 전달 -->
+        <form th:action th:object="${boardDto}" method="get">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="제목을 입력해주세요.">
+                <input type="text" name="searchVal" th:value="${searchVal}" class="form-control" placeholder="제목을 입력해주세요.">
                 <button type="submit" class="btn btn-secondary">검색</button>
             </div>
-        <br>
-        <form>
+            <br>
+        
             <table class="table table-hover">
                 <colgroup>
                     <col width="2%" />
@@ -39,7 +150,7 @@
                     <tr>
                         <th>
                             <label class="checkbox-inline">
-                            <input type="checkbox" id="allCheckBox" class="chk">
+                            <input type="checkbox" id="allCheckBox" class="chk" onclick="allChecked()">
                             </label>
                         </th>
                         <th>번호</th>
@@ -55,12 +166,12 @@
                     <tr th:each="list, index : ${list}">
                         <td>
                             <label class="checkbox-inline">
-                                <input type="checkbox" class="chk" name="cchk" value="">
+                                <input type="checkbox" class="chk" name="chk" onclick="chkClicked()" th:value="${list.id}">
                             </label>
                         <td th:text="${totalCount - (size * number) - index.index}"></td>
                         <td><a th:text="${list.title}" href=""></a></td>
                         <td th:text="${list.username}"></td>
-                        <td th:text="${#temporals.format(list.regDate, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${#temporals.format(list.regTime, 'yyyy-MM-dd')}"></td>
                         <td th:text="${list.viewCount}"></td>
                     </tr>
                 </tbody>
@@ -68,44 +179,45 @@
             <br>
             <!-- ADMIN 권한일경우에만 글쓰기 권한있음 -->
             <div class="d-flex justify-content-end">
-                <a class="btn btn-danger">글삭제</a>&nbsp;
-                <a href="/write" class="btn btn-primary">글쓰기</a>
+                <a href="javascript:boardDelete();" class="btn btn-danger">글삭제</a>&nbsp;
+                <a href="/board/write" class="btn btn-primary">글쓰기</a>
             </div>
             <br>
             <nav class="container d-flex align-items-center justify-content-center" aria-label="Page navigation example"
-                 th:with="start=${(list.number/maxPage)*maxPage + 1},
-                  end=(${(list.totalPages == 0) ? 1 : (start + (maxPage - 1) < list.totalPages ? start + (maxPage - 1) : list.totalPages)})">
+                th:with="start=${(list.number/maxPage)*maxPage + 1},
+                end=(${(list.totalPages == 0) ? 1 : (start + (maxPage - 1) < list.totalPages ? start + (maxPage - 1) : list.totalPages)})">
                 <ul class="pagination">
 
                     <li th:if="${start > 1}" class="page-item">
-                        <a th:href="@{/?(page=0)}" class="page-link" href="#" aria-label="Previous">
+                        <a th:href="@{/board/list?(page=0, searchVal=${searchVal})}" class="page-link" href="#" aria-label="Previous">
                             <span aria-hidden="true">&laquo;&laquo;</span>
                         </a>
                     </li>
 
                     <li th:if="${start > 1}" class="page-item">
-                        <a th:href="@{/?(page=${start - maxPage-1})}" class="page-link" href="#" aria-label="Previous">
+                        <a th:href="@{/board/list?(page=${start - maxPage-1}, searchVal=${searchVal})}" class="page-link" href="#" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
 
                     <li th:each="page: ${#numbers.sequence(start, end)}" class="page-item" th:classappend="${list.number+1 == page} ? active">
-                        <a th:href="@{/?(page=${page-1})}" th:text="${page}" class="page-link" href="#">1</a>
+                        <a th:href="@{/board/list?(page=${page-1}, searchVal=${searchVal})}" th:text="${page}" class="page-link" href="#">1</a>
                     </li>
 
                     <li th:if="${end < list.totalPages}" class="page-item">
-                        <a th:href="@{/?(page=${start + maxPage -1})}" class="page-link" href="#" aria-label="Next">
+                        <a th:href="@{/board/list?(page=${start + maxPage -1}, searchVal=${searchVal})}" class="page-link" href="#" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
 
                     <li th:if="${end < list.totalPages}" class="page-item">
-                        <a th:href="@{/?(page=${list.totalPages-1})}" class="page-link" href="#" aria-label="Next">
+                        <a th:href="@{/board/list?(page=${list.totalPages-1}, searchVal=${searchVal})}" class="page-link" href="#" aria-label="Next">
                             <span aria-hidden="true">&raquo;&raquo;</span>
                         </a>
                     </li>
                 </ul>
-            </nav>
+            </nav> 
+            <input id="csrf" type="hidden" name="csrftoken" value="1234">          
         </form>
     </nav>
 </div>
