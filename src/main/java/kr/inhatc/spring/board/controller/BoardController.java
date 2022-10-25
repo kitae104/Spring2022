@@ -28,16 +28,16 @@ public class BoardController {
   
   private final CustomBoardRepository customBoardRepository;
 
-  private final BoardService boardService;
+  private final BoardService boardService; 
   
   /**
    * 검색어에 따른 리스트 보여주기  
    * @param searchVal
-   * @param pageable
+   * @param pageable 
    * @param model
    * @return
    */
-  @GetMapping("/list")
+  @GetMapping("/list") 
   public String list(String searchVal, Pageable pageable, Model model){
     
     Page<BoardDto> results = customBoardRepository.selectBoardList(searchVal, pageable);
@@ -64,16 +64,16 @@ public class BoardController {
 
   @GetMapping("/write") 
   public String write(Model model){
-    model.addAttribute("boardDto", new BoardDto());
+    model.addAttribute("boardDto", new BoardDto()); 
     return "board/write"; 
   }
-  
+   
   @PostMapping("/write")
   public String save(@Valid BoardDto boardDto, BindingResult result) {
     
     log.info("=======================> " + boardDto);
     
-    //유효성검사 걸릴시
+    //유효성검사 걸릴시 
     if(result.hasErrors()){
         return "board/write";
     }
@@ -88,12 +88,12 @@ public class BoardController {
   }
   
   /**
-   * 게시판 
-   * @param boardIds
+   * 게시판  
+   * @param boardIds 
    * @return
    */
-  @PostMapping("/delete")
-  public String delete(@RequestParam List<String> boardIds) {    
+  @PostMapping("/delete")   
+  public String delete(@RequestParam List<String> boardIds) {      
     
     log.info("=======================> 삭제할 항목 수 : " + boardIds.size());
     for (int i = 0; i < boardIds.size(); i++) {
@@ -101,6 +101,6 @@ public class BoardController {
       log.info("=======================> 삭제할 번호 : " + id);
       boardService.deleteBoard(id);
     }
-    return "redirect:/board/list";
+    return "board/list"; 
   }
 }

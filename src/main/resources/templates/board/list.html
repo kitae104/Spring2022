@@ -3,11 +3,10 @@
     xmlns:th="http://www.thymeleaf.org"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
     layout:decorate="~{layouts/layout1}">
-
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <!-- default header name is X-CSRF-TOKEN -->
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-
+ 
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
+    
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
 
@@ -92,9 +91,7 @@
 
                 document.querySelectorAll('input[name="chk"]:checked').forEach(function(v, i) {
                     arr[i] = v.value;
-                });
-
-               
+                });               
 
                 const form = document.createElement('form');
                 form.setAttribute('method', 'post');            //Post 메소드 적용
@@ -105,18 +102,26 @@
                 input1.setAttribute("name", "boardIds");
                 input1.setAttribute("value", arr);                
                 form.appendChild(input1);
+                                
+                var header = $("meta[name='_csrf_header']").attr('content');
+                var token = $("meta[name='_csrf']").attr('content');
                 
-                // var csrfToken = document.getElementById('csrf').value;
-                // alert(csrfToken);
-                // var csrftoken = document.createElement("input");
-                // csrftoken.setAttribute("type", "hidden");
-                // csrftoken.setAttribute("name", 'csrftoken');
-                // csrftoken.setAttribute("value", csrfToken);
-                // form.appendChild(csrftoken);
-                
-                console.log(form);
-                document.body.appendChild(form);
-                form.submit();                
+                /*
+                var ajax = new XMLHttpRequest();
+                ajax.open("POST", "/board/delete", true); 
+                ajax.setRequestHeaer("Content-Type", "application/x-www-form-urlencoded data");
+                ajax.send(header + "=" + token + "&boardIds=" + arr);                 
+               */
+                $.ajax({
+                    url: "/board/delete",
+                    method: "post",
+                    beforeSend: function(xhr){
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success: function(res) {
+                        console.log(res);
+                    }
+                });
             }
         }
     }    
@@ -129,7 +134,9 @@
         <h1>게시판 리스트</h1>        
         <br>
         <!-- 페이지 번호와 키워드를 함께 컨트롤러로 전달 -->
+        <input type="hidden" name="csrf_token" value="1234567890" />
         <form th:action th:object="${boardDto}" method="get">
+            
             <div class="input-group">
                 <input type="text" name="searchVal" th:value="${searchVal}" class="form-control" placeholder="제목을 입력해주세요.">
                 <button type="submit" class="btn btn-secondary">검색</button>
@@ -216,8 +223,7 @@
                         </a>
                     </li>
                 </ul>
-            </nav> 
-            <input id="csrf" type="hidden" name="csrftoken" value="1234">          
+            </nav>             
         </form>
     </nav>
 </div>

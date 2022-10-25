@@ -27,7 +27,7 @@ public class SecurityConfig {
 
           // 페이지 접근에 대한 인증 처리
         http.authorizeRequests()
-                .mvcMatchers("/css/**", "/js/**", "/img/**").permitAll()
+                .mvcMatchers("/css/**", "/js/**", "/img/**", "/images/**").permitAll()
                 .mvcMatchers("/", "/thymeleaf/**", "/log/**", "/item/**", "/member/**", "/order/**", "/orders/**").permitAll()
                 .mvcMatchers("/files/**", "/board/**").permitAll() 
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
@@ -36,7 +36,7 @@ public class SecurityConfig {
         http.exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 
-        http.csrf().disable(); 
+        //http.csrf().disable(); 
         
         return http.build();
     }
