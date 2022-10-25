@@ -11,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 
 import kr.inhatc.spring.member.dto.MemberFormDto;
@@ -42,7 +41,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @Rollback(value = false)
+    //@Rollback(value = false)
     @DisplayName("로그인 성공 테스트")
     public void loginSuccessTest() throws Exception{
         String email = "test@email.com";
