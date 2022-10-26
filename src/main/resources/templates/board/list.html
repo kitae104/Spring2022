@@ -3,10 +3,12 @@
     xmlns:th="http://www.thymeleaf.org"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
     layout:decorate="~{layouts/layout1}">
- 
-<meta name="_csrf_header" th:content="${_csrf.headerName}">
-<meta name="_csrf" th:content="${_csrf.token}">
-    
+
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
 
@@ -93,18 +95,18 @@
                     arr[i] = v.value;
                 });               
 
-                const form = document.createElement('form');
-                form.setAttribute('method', 'post');            //Post 메소드 적용
-                form.setAttribute('action', '/board/delete');
-
-                var input1 = document.createElement('input');
-                input1.setAttribute("type", "hidden");
-                input1.setAttribute("name", "boardIds");
-                input1.setAttribute("value", arr);                
-                form.appendChild(input1);
-                                
-                var header = $("meta[name='_csrf_header']").attr('content');
-                var token = $("meta[name='_csrf']").attr('content');
+                // const form = document.createElement('form');
+                // form.setAttribute('method', 'post');            //Post 메소드 적용
+                // form.setAttribute('action', '/board/delete');
+                //
+                // var input1 = document.createElement('input');
+                // input1.setAttribute("type", "hidden");
+                // input1.setAttribute("name", "boardIds");
+                // input1.setAttribute("value", arr);
+                // form.appendChild(input1);
+                //
+                // var header = $("meta[name='_csrf_header']").attr('content');
+                // var token = $("meta[name='_csrf']").attr('content');
                 
                 /*
                 var ajax = new XMLHttpRequest();
@@ -112,15 +114,22 @@
                 ajax.setRequestHeaer("Content-Type", "application/x-www-form-urlencoded data");
                 ajax.send(header + "=" + token + "&boardIds=" + arr);                 
                */
+                // csrf값 생성
+                const token = $("meta[name='_csrf']").attr("content");
+                const header = $("meta[name='_csrf_header']").attr("content");
+                let paramData = new Object();
+                paramData['boardIds'] = arr;
+                const param = JSON.stringify(paramData);
+
                 $.ajax({
                     url: "/board/delete",
                     method: "post",
-                    beforeSend: function(xhr){
+                    data: param,
+                    beforeSend: function(xhr){               // POST로 데이터를 전송하기 전에 헤더에 csrf값을 설정
                         xhr.setRequestHeader(header, token);
                     },
-                    success: function(res) {
-                        console.log(res);
-                    }
+                    dataType: "json",                        // 서버에서 결과값으로 받을 데이터 타입을 json으로 설정
+                    cache: false,
                 });
             }
         }
