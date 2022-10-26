@@ -118,7 +118,7 @@
                 const token = $("meta[name='_csrf']").attr("content");
                 const header = $("meta[name='_csrf_header']").attr("content");
                 let paramData = new Object();
-                paramData['boardIds'] = arr;
+                paramData['idList'] = arr;
                 const param = JSON.stringify(paramData);
 
                 $.ajax({
@@ -129,7 +129,13 @@
                         xhr.setRequestHeader(header, token);
                     },
                     dataType: "json",                        // 서버에서 결과값으로 받을 데이터 타입을 json으로 설정
-                    cache: false,
+                    contentType: "application/json",
+                    // success: function(data) {
+                    //     alert("성공");
+                    // },
+                    // error: function(errorThrown) {
+                    //     alert(errorThrown.statusText);
+                    // }
                 });
             }
         }
@@ -185,7 +191,7 @@
                                 <input type="checkbox" class="chk" name="chk" onclick="chkClicked()" th:value="${list.id}">
                             </label>
                         <td th:text="${totalCount - (size * number) - index.index}"></td>
-                        <td><a th:text="${list.title}" href=""></a></td>
+                        <td><a th:text="${list.title}" th:href="@{/board/update/{boardId}(boardId=${list.id})}"></a></td>
                         <td th:text="${list.username}"></td>
                         <td th:text="${#temporals.format(list.regTime, 'yyyy-MM-dd')}"></td>
                         <td th:text="${list.viewCount}"></td>

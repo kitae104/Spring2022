@@ -62,5 +62,8 @@ public class BoardService {
     board.delete("Y");
     return board;    
   }
-  
+
+  public Board selectBoardDetail(Long id) {
+    return boardRepository.findById(id).get();
+  }
 }

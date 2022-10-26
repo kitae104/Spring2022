@@ -1,18 +1,18 @@
 package kr.inhatc.spring.board.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import kr.inhatc.spring.board.dto.BoardDeleteDto;
+import kr.inhatc.spring.board.entity.Board;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import kr.inhatc.spring.board.dto.BoardDto;
 import kr.inhatc.spring.board.repository.CustomBoardRepository;
@@ -82,25 +82,48 @@ public class BoardController {
     return "redirect:/board/list";
   }
 
-  @GetMapping("/update")
-  public String update(){
-      return "board/update";
+  @GetMapping("/update/{boardId}")
+  public String detail(@PathVariable Long boardId, Model model){
+    Board board = boardService.selectBoardDetail(boardId);
+    BoardDto boardDto = new BoardDto();
+    boardDto.setId(boardId);
+    boardDto.setUsername(board.getMember().getName());
+    boardDto.setTitle(board.getTitle());
+    boardDto.setContent(board.getContent());
+    model.addAttribute("boardDto", boardDto);
+
+    return "board/update";
   }
-  
+
+  @PostMapping("/update/{boardId}")
+  public String update(@Valid BoardDto boardDto, BindingResult result){
+
+    log.info("=======================> " + boardDto);
+
+    //유효성검사 걸릴시
+    if(result.hasErrors()){
+      return "board/update";
+    }
+
+    boardService.saveBoard(boardDto);
+    return "redirect:/board/list";
+  }
+
   /**
    * 게시판  
-   * @param boardIds 
+   * @param
    * @return
    */
+  @ResponseBody
   @PostMapping("/delete")   
-  public String delete(@RequestParam List<String> boardIds) {      
+  public String delete(@RequestBody BoardDeleteDto dto) {
     
-    log.info("=======================> 삭제할 항목 수 : " + boardIds.size());
-    for (int i = 0; i < boardIds.size(); i++) {
-      Long id = Long.valueOf(boardIds.get(i)); 
-      log.info("=======================> 삭제할 번호 : " + id);
+    log.info("=======================> 삭제할 항목 수 : " + dto);
+    List<Long> idList = dto.getIdList();
+    for (Long id : idList) {
       boardService.deleteBoard(id);
     }
-    return "board/list"; 
+
+    return "redirect:/board/list";
   }
 }
