@@ -29,11 +29,9 @@ public class BoardService {
    */
   public Long saveBoard(BoardDto boardDto) {
     
-    log.info("======================> saveBoard 수행");
-    List<Member> memberList = memberRepository.findAll();
     
-    Member member = memberList.get(0);
-    log.info("======================> " + member);
+    List<Member> memberList = memberRepository.findAll();    
+    Member member = memberList.get(0);    
     Board board = null;
     
     // insert
@@ -42,11 +40,15 @@ public class BoardService {
       log.info("======================> " + board);
       boardRepository.save(board);
     }    
+    
     // update
     else {
       board = boardRepository.findById(boardDto.getId()).get();
       board.update(boardDto.getTitle(), boardDto.getContent());
     }
+    
+    // 파일 저장 
+    fileService.saveFile(boardDto);
     
     return board.getId();
   }
@@ -64,6 +66,8 @@ public class BoardService {
   }
 
   public Board selectBoardDetail(Long id) {
-    return boardRepository.findById(id).get();
+    Board board = boardRepository.findById(id).get();
+    board.updateViewCount(board.getViewCount());
+    return board;    
   }
 }

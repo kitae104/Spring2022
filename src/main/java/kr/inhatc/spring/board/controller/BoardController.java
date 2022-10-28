@@ -1,20 +1,24 @@
 package kr.inhatc.spring.board.controller;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.validation.Valid;
 
-import kr.inhatc.spring.board.dto.BoardDeleteDto;
-import kr.inhatc.spring.board.entity.Board;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.inhatc.spring.board.dto.BoardDeleteDto;
 import kr.inhatc.spring.board.dto.BoardDto;
+import kr.inhatc.spring.board.entity.Board;
 import kr.inhatc.spring.board.repository.CustomBoardRepository;
 import kr.inhatc.spring.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -84,12 +88,15 @@ public class BoardController {
 
   @GetMapping("/update/{boardId}")
   public String detail(@PathVariable Long boardId, Model model){
-    Board board = boardService.selectBoardDetail(boardId);
-    BoardDto boardDto = new BoardDto();
+    
+	Board board = boardService.selectBoardDetail(boardId);
+    
+	BoardDto boardDto = new BoardDto();
     boardDto.setId(boardId);
     boardDto.setUsername(board.getMember().getName());
     boardDto.setTitle(board.getTitle());
     boardDto.setContent(board.getContent());
+    
     model.addAttribute("boardDto", boardDto);
 
     return "board/update";
