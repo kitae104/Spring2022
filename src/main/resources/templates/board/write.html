@@ -23,7 +23,8 @@
 </th:block>
 
 <div layout:fragment="content">
-    <form th:action th:object="${boardDto}" method="post">    
+    <!-- 파일 전송을 위해 enctype="multipart/form-data" 설정-->
+    <form th:action th:object="${boardDto}" method="post" enctype="multipart/form-data">
         <article>
             <div class="container" role="main">
                 <h1>게시판 등록</h1>
@@ -35,7 +36,7 @@
                 <br>
                 <div class="mb-3">
                     <label for="reg_id">작성자</label>
-                    <input type="text" class="form-control" id="reg_id" name="regId"  value="관리자" readonly>
+                    <input type="text" class="form-control" id="reg_id" name="regId"  th:value="${username}" readonly>
                 </div>
                 <br>
                 <div class="mb-3">
@@ -43,7 +44,8 @@
                     <textarea class="form-control" rows="5" id="content" name="content" placeholder="내용을 입력해 주세요"></textarea>
                 </div>
                 <br>
-                 <div class="mb-3">
+                <!-- 여러개의 파일을 동시에 업로드 할 수 있도록 multiple 설정-->
+                <div class="mb-3">
                     <label for="formFileMultiple" class="form-label">파일업로드</label>
                     <input class="form-control" type="file" id="formFileMultiple" name="multipartFile" multiple>
                 </div>
@@ -55,6 +57,7 @@
                 </div>
             </div>
         </article>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
     </form>
 </div>
 

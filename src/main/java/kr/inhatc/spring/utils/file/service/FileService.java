@@ -1,12 +1,11 @@
 package kr.inhatc.spring.utils.file.service;
 
+import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.UUID;
-
-import org.springframework.stereotype.Service;
-
-import lombok.extern.log4j.Log4j2;
 
 @Service
 @Log4j2
@@ -50,5 +49,5 @@ public class FileService {
         } else {
             log.info("파일이 존재하지 않습니다.");
         }
-    }
+    }    
 }

@@ -1,24 +1,26 @@
 package kr.inhatc.spring.board.repository;
 
-import static kr.inhatc.spring.board.entity.QBoard.board;
-import static kr.inhatc.spring.member.entity.QMember.member;
-
-import java.util.List;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.inhatc.spring.board.dto.BoardDto;
+import kr.inhatc.spring.board.dto.BoardFileDto;
+import kr.inhatc.spring.board.dto.QBoardDto;
+import kr.inhatc.spring.board.dto.QBoardFileDto;
+import lombok.extern.log4j.Log4j2;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
 
-import kr.inhatc.spring.board.dto.BoardDto;
-import kr.inhatc.spring.board.dto.QBoardDto;
+import static kr.inhatc.spring.board.entity.QBoard.board;
+import static kr.inhatc.spring.board.entity.QBoardFile.boardFile;
+import static kr.inhatc.spring.member.entity.QMember.member;
 
 @Repository
+@Log4j2
 public class BoardRepositoryImpl implements CustomBoardRepository{
   
   private final JPAQueryFactory jpaQueryFactory;
@@ -35,6 +37,28 @@ public class BoardRepositoryImpl implements CustomBoardRepository{
     List<BoardDto> content = getBoardMemberDtos(searchVal, pageable);
     Long count = getCount(searchVal);
     return new PageImpl<>(content, pageable, count);
+  }
+
+  @Override
+  public List<BoardFileDto> selectBoardFileDetail(Long boardId) {
+    
+    log.info(">>>>>>>>>>>>>>> BoardRepositoryImpl : " + boardId);
+    
+    List<BoardFileDto> content = jpaQueryFactory
+            .select(new QBoardFileDto(
+                    boardFile.id
+                    ,boardFile.file.id
+                    ,boardFile.file.originFileName
+                    ,boardFile.file.size
+                    ,boardFile.file.extension
+            ))
+            .from(boardFile)
+            .leftJoin(boardFile.file)
+            .where(boardFile.boardId.eq(boardId))
+            .where(boardFile.delYn.eq("N"))
+            .fetch();
+
+    return content;
   }
 
   /**
@@ -58,6 +82,7 @@ public class BoardRepositoryImpl implements CustomBoardRepository{
         .from(board)
         .leftJoin(board.member, member)
         .where(containsSearch(searchVal))
+        .where(board.delYn.eq("N"))
         .orderBy(board.id.desc())               // 최신 정보가 윗쪽으로
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())

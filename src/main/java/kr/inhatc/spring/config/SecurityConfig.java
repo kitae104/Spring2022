@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -34,9 +35,12 @@ public class SecurityConfig {
                 .anyRequest().authenticated();
 
         http.exceptionHandling()
-                .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint()); 
 
-        //http.csrf().disable(); 
+        // 예외 처리 
+        http.csrf()
+        .ignoringAntMatchers("/board/fileDelete", "/board/delete" )
+        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()); //csrf 토큰자동생성
         
         return http.build();
     }

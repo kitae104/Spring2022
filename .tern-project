@@ -1,0 +1,33 @@
+{
+  "ecmaVersion": 5,
+  "plugins": {
+    "guess-types": {
+      
+    },
+    "outline": {
+      
+    },
+    "ckeditor4.4.x": {
+      
+    },
+    "browser-extension": {
+      
+    },
+    "gcharts": {
+      
+    },
+    "gmaps3.frozen": {
+      
+    },
+    "bootstrap": {
+      
+    },
+    "jquery-extension": {
+      
+    }
+  },
+  "libs": [
+    "browser",
+    "jquery"
+  ]
+}

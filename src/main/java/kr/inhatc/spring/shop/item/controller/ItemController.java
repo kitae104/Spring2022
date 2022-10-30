@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.inhatc.spring.member.repository.MemberRepository;
 import kr.inhatc.spring.shop.item.dto.ItemFormDto;
 import kr.inhatc.spring.shop.item.dto.ItemSearchDto;
 import kr.inhatc.spring.shop.item.dto.MainItemDto;
@@ -36,6 +38,8 @@ public class ItemController
 
 	private final ItemService itemService;
 
+	private final MemberRepository memberRepository;
+	
 	@GetMapping(value = "/admin/item/new")
 	public String itemForm(Model model)
 	{
@@ -163,11 +167,12 @@ public class ItemController
 	 * @return
 	 */
 	@GetMapping(value = "/")
-	public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, Principal principal)
-	{
-		if(principal != null) {
-			log.info("==================> " + principal.getName());
-			model.addAttribute("user", principal.getName());
+	public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, @AuthenticationPrincipal User user){
+	    // 사용자 이름 가져오기 
+		if(user != null) {
+		  log.info(">>>> User : " + user.getUsername());
+		  String username = memberRepository.findByEmail(user.getUsername()).getName();
+		  model.addAttribute("user", username);			
 		}
 
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);

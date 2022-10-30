@@ -72,9 +72,8 @@
         });
     }
 
-    // 글삭제 
+    //글삭제
     function boardDelete(){
-
         //체크박스 체크된 항목
         const query = 'input[name="chk"]:checked'
         const selectedElements = document.querySelectorAll(query)
@@ -87,59 +86,29 @@
             return false;
         } else{
             if (confirm("정말로 삭제하시겠습니까?")) {
-                
                 //배열생성
                 const arr = new Array(selectedElementsCnt);
 
                 document.querySelectorAll('input[name="chk"]:checked').forEach(function(v, i) {
                     arr[i] = v.value;
-                });               
-
-                // const form = document.createElement('form');
-                // form.setAttribute('method', 'post');            //Post 메소드 적용
-                // form.setAttribute('action', '/board/delete');
-                //
-                // var input1 = document.createElement('input');
-                // input1.setAttribute("type", "hidden");
-                // input1.setAttribute("name", "boardIds");
-                // input1.setAttribute("value", arr);
-                // form.appendChild(input1);
-                //
-                // var header = $("meta[name='_csrf_header']").attr('content');
-                // var token = $("meta[name='_csrf']").attr('content');
-                
-                /*
-                var ajax = new XMLHttpRequest();
-                ajax.open("POST", "/board/delete", true); 
-                ajax.setRequestHeaer("Content-Type", "application/x-www-form-urlencoded data");
-                ajax.send(header + "=" + token + "&boardIds=" + arr);                 
-               */
-                // csrf값 생성
-                const token = $("meta[name='_csrf']").attr("content");
-                const header = $("meta[name='_csrf_header']").attr("content");
-                let paramData = new Object();
-                paramData['idList'] = arr;
-                const param = JSON.stringify(paramData);
-
-                $.ajax({
-                    url: "/board/delete",
-                    method: "post",
-                    data: param,
-                    beforeSend: function(xhr){               // POST로 데이터를 전송하기 전에 헤더에 csrf값을 설정
-                        xhr.setRequestHeader(header, token);
-                    },
-                    dataType: "json",                        // 서버에서 결과값으로 받을 데이터 타입을 json으로 설정
-                    contentType: "application/json",
-                    // success: function(data) {
-                    //     alert("성공");
-                    // },
-                    // error: function(errorThrown) {
-                    //     alert(errorThrown.statusText);
-                    // }
                 });
+
+                const form = document.createElement('form');
+                form.setAttribute('method', 'post');        //Post 메소드 적용
+                form.setAttribute('action', '/board/delete');
+
+                var input1 = document.createElement('input');
+                input1.setAttribute("type", "hidden");
+                input1.setAttribute("name", "boardIds");
+                input1.setAttribute("value", arr);
+                form.appendChild(input1);
+                console.log(form);
+                document.body.appendChild(form);
+                form.submit();
             }
         }
-    }    
+    }
+    
 </script>
 </th:block>
 
@@ -149,7 +118,6 @@
         <h1>게시판 리스트</h1>        
         <br>
         <!-- 페이지 번호와 키워드를 함께 컨트롤러로 전달 -->
-        <input type="hidden" name="csrf_token" value="1234567890" />
         <form th:action th:object="${boardDto}" method="get">
             
             <div class="input-group">
@@ -165,8 +133,7 @@
                     <col width="20%" />
                     <col width="5%" />
                     <col width="5%" />
-                    <col width="5%" />
-                    <col width="5%" />
+                    <col width="5%" />                    
                 </colgroup>
                 <thead>
                     <tr>
@@ -179,12 +146,14 @@
                         <th>제목</th>
                         <th>작성자</th>
                         <th>날짜</th>
-                        <th>조회수</th>
-                        <th>파일유무</th>
+                        <th>조회수</th>                        
                     </tr>
                 </thead>
 
                 <tbody>
+                	<tr th:if="${totalCount == 0}">
+                    	<td colspan="6" style="text-align:center">조회된 리스트가 없습니다.</td>
+                	</tr>
                     <tr th:each="list, index : ${list}">
                         <td>
                             <label class="checkbox-inline">
@@ -194,17 +163,18 @@
                         <td><a th:text="${list.title}" th:href="@{/board/update/{boardId}(boardId=${list.id})}"></a></td>
                         <td th:text="${list.username}"></td>
                         <td th:text="${#temporals.format(list.regTime, 'yyyy-MM-dd')}"></td>
-                        <td th:text="${list.viewCount}"></td>
+                        <td th:text="${list.viewCount}"></td> 
                     </tr>
                 </tbody>
             </table>
             <br>
-            <!-- ADMIN 권한일경우에만 글쓰기 권한있음 -->
+            
             <div class="d-flex justify-content-end">
                 <a href="javascript:boardDelete();" class="btn btn-danger">글삭제</a>&nbsp;
                 <a href="/board/write" class="btn btn-primary">글쓰기</a>
             </div>
             <br>
+            
             <nav class="container d-flex align-items-center justify-content-center" aria-label="Page navigation example"
                 th:with="start=${(list.number/maxPage)*maxPage + 1},
                 end=(${(list.totalPages == 0) ? 1 : (start + (maxPage - 1) < list.totalPages ? start + (maxPage - 1) : list.totalPages)})">

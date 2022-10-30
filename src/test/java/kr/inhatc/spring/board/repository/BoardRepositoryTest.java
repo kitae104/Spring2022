@@ -1,18 +1,21 @@
 package kr.inhatc.spring.board.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
+import kr.inhatc.spring.board.dto.BoardDto;
+import kr.inhatc.spring.board.entity.Board;
+import kr.inhatc.spring.member.entity.Member;
+import kr.inhatc.spring.member.repository.MemberRepository;
+import lombok.Builder;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.multipart.MultipartFile;
 
-import kr.inhatc.spring.board.dto.BoardDto;
-import kr.inhatc.spring.board.entity.Board;
-import kr.inhatc.spring.member.entity.Member;
-import kr.inhatc.spring.member.repository.MemberRepository;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class BoardRepositoryTest {
@@ -36,8 +39,11 @@ class BoardRepositoryTest {
 
       List<Member> memberList = memberRepository.findAll();
       Member member = memberList.get(0);
-
-      BoardDto boardDto = new BoardDto(title, content);
+      
+      BoardDto boardDto = BoardDto.builder()
+              .title(title)
+              .content(content)
+              .build();
       Board board = boardDto.toEntity(member);
       boardRepository.save(board);
 

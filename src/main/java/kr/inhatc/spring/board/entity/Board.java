@@ -17,79 +17,86 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
-public class Board extends BaseEntity
-{
+@ToString(exclude = "member")
+public class Board extends BaseEntity { 
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "board_id")
-	private Long id; // 번호
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "board_id")
+  private Long id; // 번호
 
-	private String title; // 제목
-	private String content; // 내용 - 에디터 변경 처리
+  private String title; // 제목
+  private String content; // 내용 - 에디터 변경 처리
 
-	private Long viewCount; // 조회수
-	private String delYn; // 삭제여부
+  private Long viewCount; // 조회수
+  private String delYn; // 삭제여부
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
-	private Member member;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "member_id")
+  private Member member;
 
-	/**
-	 * 수정하기
-	 * 
-	 * @param title
-	 * @param content
-	 * @return
-	 */
-	public Board update(String title, String content)
-	{
-		this.title = title;
-		this.content = content;
-		return this;
-	}
+  /**
+   * 수정하기
+   * 
+   * @param title
+   * @param content
+   * @return
+   */
+  public Board update(String title, String content) {
+    this.title = title;
+    this.content = content;
+    return this;
+  }
 
-	/**
-	 * 삭제하기
-	 * 
-	 * @param delYn
-	 * @return
-	 */
-	public Board delete(String delYn)
-	{
-		this.delYn = delYn;
-		return this;
-	}
+  /**
+   * 삭제하기
+   * 
+   * @param delYn
+   * @return
+   */
+  public Board delete(String delYn) {
+    this.delYn = delYn;
+    return this;
+  }
 
-	/**
-	 * 게시글 생성하기
-	 * 
-	 * @param boardDto
-	 * @param member
-	 */
-	@Builder
-	public Board(BoardDto boardDto, Member member)
-	{
-		this.title = boardDto.getTitle();
-		this.content = boardDto.getContent();
-		this.viewCount = 0L;
-		this.delYn = "N";
-		this.member = member;
-	}
+//  /**
+//   * 게시글 생성하기
+//   * 
+//   * @param boardDto
+//   * @param member
+//   */
+//  @Builder
+//  public Board(BoardDto boardDto, Member member) {
+//    this.title = boardDto.getTitle();
+//    this.content = boardDto.getContent();
+//    this.viewCount = 0L;
+//    this.delYn = "N";
+//    this.member = member;
+//  }
 
-	/**
-	 * 게시판 조회수 증가
-	 * @param viewCount
-	 * @return
-	 */
-	public Board updateViewCount(Long viewCount)
-	{
-		this.viewCount = viewCount+1;
-        return this;
-	}
+  @Builder
+  public Board(String title, String content, Member member) {
+    this.title = title;
+    this.content = content;
+    this.viewCount = 0L;
+    this.delYn = "N";
+    this.member = member;
+  }
+
+  /**
+   * 게시판 조회수 증가
+   * 
+   * @param viewCount
+   * @return
+   */
+  public Board updateViewCount(Long viewCount) {
+    this.viewCount = viewCount + 1;
+    return this;
+  }
 }

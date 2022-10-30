@@ -1,5 +1,6 @@
 package kr.inhatc.spring.member.service;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import org.springframework.security.core.userdetails.User;
@@ -54,6 +55,10 @@ public class MemberService implements UserDetailsService {
         }
 
         log.info("===========>" + member.getEmail() + ", " + member.getRole().toString() );
+        
+        
+        
+        
         return User.builder()                       // User 객체 생성하기
                 .username(member.getEmail())
                 .password(member.getPassword())
