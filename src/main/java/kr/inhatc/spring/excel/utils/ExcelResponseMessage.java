@@ -9,5 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ExcelResponseMessage
 {
-	private String message;	
+	private String message;		
 }

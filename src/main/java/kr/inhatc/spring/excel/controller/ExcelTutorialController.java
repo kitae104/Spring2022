@@ -17,32 +17,37 @@ import kr.inhatc.spring.excel.entity.ExcelTutorial;
 import kr.inhatc.spring.excel.service.ExcelTutorialService;
 import kr.inhatc.spring.excel.utils.ExcelHelper;
 import kr.inhatc.spring.excel.utils.ExcelResponseMessage;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Controller
+@RequiredArgsConstructor
 public class ExcelTutorialController
 {
-	@Autowired
-	ExcelTutorialService fileService;
+
+	private final ExcelTutorialService fileService;
 
 	@GetMapping(value = "/excel/excelUpload")
-	public String excelUpload() {
-		return "excel/excelUpload"; 
+	public String excelUpload()
+	{
+		return "excel/excelUpload";
 	}
-	
+
 	@PostMapping("/excel/upload")
-	public @ResponseBody ResponseEntity uploadFile(@RequestParam("file") MultipartFile file)	
-	{		
-		log.info("================================= 엑셀 업로드 처리");	
-		
+	public @ResponseBody ResponseEntity uploadFile(@RequestParam("file") MultipartFile file)
+	{
+		log.info("================================= 엑셀 업로드 처리");
+
 		String message = "";
 		if (ExcelHelper.hasExcelFormat(file))
 		{
 			try
 			{
 				fileService.save(file);
+
 				List<ExcelTutorial> excelList = fileService.getAllExcelTutorials();
+
 				if (excelList.isEmpty())
 				{
 					return new ResponseEntity<String>(message, HttpStatus.NO_CONTENT);
@@ -60,7 +65,24 @@ public class ExcelTutorialController
 	}
 
 	@GetMapping(value = "/excel/excelView")
-	public String excelView() {
-		return "excel/excelView"; 
+	public ResponseEntity<List<ExcelTutorial>> excelView()
+	{
+		try
+		{
+			List<ExcelTutorial> tutorials = fileService.getAllExcelTutorials();
+
+			if (tutorials.isEmpty())
+			{
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			
+			log.info(">> 추가된 엑셀 파일 : " + tutorials.size());
+			
+			return new ResponseEntity<>(tutorials, HttpStatus.OK);
+		} 
+		catch (Exception e)
+		{
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }
