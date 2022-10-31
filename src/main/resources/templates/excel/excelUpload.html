@@ -63,6 +63,31 @@
     		$('#fileUpload').value =''; 		
     		
     	}
+    	
+		function download(){
+			alert("다운로드 실행");
+    		    		            
+            const url = '/excel/download';
+                		
+    		// 다운로드 호출     		
+    		$.ajax({
+		    	url : url,
+		        type : 'GET',
+		        //data : formData,     		        
+		        success : function(result, staus) {		
+		        	console.log(staus);
+		            
+		        },
+		        error : function(jqXHR, status, error){
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseJSON.message);
+                    }
+                }
+		    });  
+    	}
     </script>
 
 </th:block>
@@ -75,6 +100,7 @@
     <div class="text-center mt-3">
     	<input type='file' id='fileUpload' />
     	<button type="button" class="btn btn-primary btn-lg" onclick="upload()">업로드하기</button>
+    	<button type="button" class="btn btn-primary btn-lg" onclick="download()">다운로드하기</button>
     </div>
 </div>
 

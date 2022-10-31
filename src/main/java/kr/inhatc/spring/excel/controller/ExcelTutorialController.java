@@ -1,9 +1,13 @@
 package kr.inhatc.spring.excel.controller;
 
+import java.io.IOException;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,25 +20,25 @@ import org.springframework.web.multipart.MultipartFile;
 import kr.inhatc.spring.excel.entity.ExcelTutorial;
 import kr.inhatc.spring.excel.service.ExcelTutorialService;
 import kr.inhatc.spring.excel.utils.ExcelHelper;
-import kr.inhatc.spring.excel.utils.ExcelResponseMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Controller
+@RequestMapping("/excel")
 @RequiredArgsConstructor
 public class ExcelTutorialController
 {
 
 	private final ExcelTutorialService fileService;
 
-	@GetMapping(value = "/excel/excelUpload")
+	@GetMapping(value = "/excelUpload")
 	public String excelUpload()
 	{
 		return "excel/excelUpload";
 	}
 
-	@PostMapping("/excel/upload")
+	@PostMapping("/upload")
 	public @ResponseBody ResponseEntity uploadFile(@RequestParam("file") MultipartFile file)
 	{
 		log.info("================================= 엑셀 업로드 처리");
@@ -64,7 +68,7 @@ public class ExcelTutorialController
 		return new ResponseEntity<String>(message, HttpStatus.BAD_REQUEST);
 	}
 
-	@GetMapping(value = "/excel/excelView")
+	@GetMapping(value = "/excelView")
 	public ResponseEntity<List<ExcelTutorial>> excelView()
 	{
 		try
@@ -84,5 +88,18 @@ public class ExcelTutorialController
 		{
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	@GetMapping("/download")
+	public ResponseEntity<Resource> getFile(){
+	  log.info(">> 엑셀 다운로드 수행");
+	  
+	  String filename = "test.xlsx";
+	  InputStreamResource file = new InputStreamResource(fileService.load());
+	  	  
+	  return ResponseEntity.ok()
+	      .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+	        .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+	        .body(file);
 	}
 }

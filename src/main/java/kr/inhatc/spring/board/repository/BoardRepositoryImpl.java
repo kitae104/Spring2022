@@ -116,4 +116,4 @@ public class BoardRepositoryImpl implements CustomBoardRepository{
     return searchVal != null ? board.title.contains(searchVal) : null;
   }
   
-}
+} 

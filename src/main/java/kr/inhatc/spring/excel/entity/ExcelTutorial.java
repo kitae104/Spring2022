@@ -17,18 +17,23 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ExcelTutorial
-{
-	 @Id
-	 @Column(name = "id")
-	 private Long id;
-	 
-	 @Column(name = "title")
-	 private String title;
-	 
-	 @Column(name = "description")
-	 private String description;
-	 
-	 @Column(name = "published")
-	 private Boolean published;
+public class ExcelTutorial {
+  @Id
+  @Column(name = "id")
+  private Long id;
+
+  @Column(name = "title")
+  private String title;
+
+  @Column(name = "description")
+  private String description;
+
+  @Column(name = "published")
+  private Boolean published;
+
+  public ExcelTutorial(String title, String description, boolean published) {
+    this.title = title;
+    this.description = description;
+    this.published = published;
+  }
 }

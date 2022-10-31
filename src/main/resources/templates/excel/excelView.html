@@ -34,6 +34,7 @@
 
 <script>
 var test1 = null, test2 = null;
+
 function gridExcelToWeb(file, target){
     var reader = new FileReader();
 
@@ -70,7 +71,7 @@ $('#file').change( function(){
     gridExcelToWeb(selectedFile,  $('#grid'))
 });
 
-/*
+
 //데이터를 요청해서 그리는 함수(ajax역할)
 function getDataAndGrid(){
     new Promise(function(suc,fal){
@@ -117,5 +118,5 @@ function gridExcelToWeb(file, target){
     };
     reader.readAsArrayBuffer(file);
 }   
-*/
+
 </script>
