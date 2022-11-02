@@ -102,4 +102,9 @@ public class ExcelTutorialController
 	        .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
 	        .body(file);
 	}
+	
+	@GetMapping(value = "/excelView2")
+    public String excelView2() {
+        return "excel/excelView"; 
+    }
 }

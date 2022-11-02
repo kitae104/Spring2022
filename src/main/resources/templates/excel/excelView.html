@@ -26,6 +26,7 @@
 	
     <div class="text-center mt-3">
     	<input type='file' id='file'/>
+    	<button type="button" class="btn btn-primary" onclick="getDataAndGrid()">데이터읽기</button>
     	<div id='grid'></div>
     </div>
 </div>
@@ -77,14 +78,14 @@ function getDataAndGrid(){
     new Promise(function(suc,fal){
         try{
             var request = new XMLHttpRequest();
-            request.open('POST', '파일을 가져올 주소', true);
+            request.open('GET', '/excel/excelView', true);
             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
             request.responseType = 'blob';
             request.onload = function() {
                 if(request.status === 200) {
                     var blob = new Blob([request.response], { type: 'application/xlsx' });
                     if(blob.size > 0){
-                        gridExcelToWeb(blob,  $('#엑셀을그릴테그'));	
+                        gridExcelToWeb(blob,  $('#grid'));	
                     } else {
                         console.log('결과가 없습니다.');
                     }
