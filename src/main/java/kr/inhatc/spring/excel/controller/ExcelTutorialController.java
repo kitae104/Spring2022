@@ -1,6 +1,5 @@
 package kr.inhatc.spring.excel.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.core.io.InputStreamResource;
@@ -17,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.inhatc.spring.excel.entity.ExcelData;
 import kr.inhatc.spring.excel.entity.ExcelTutorial;
+import kr.inhatc.spring.excel.service.ExcelDataService;
 import kr.inhatc.spring.excel.service.ExcelTutorialService;
 import kr.inhatc.spring.excel.utils.ExcelHelper;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,8 @@ public class ExcelTutorialController
 {
 
 	private final ExcelTutorialService fileService;
+	
+	private final ExcelDataService excelDataService;
 
 	@GetMapping(value = "/excelUpload")
 	public String excelUpload()
@@ -68,6 +71,36 @@ public class ExcelTutorialController
 		return new ResponseEntity<String>(message, HttpStatus.BAD_REQUEST);
 	}
 
+	@PostMapping("/upload2")
+    public @ResponseBody ResponseEntity uploadFile2(@RequestParam("file") MultipartFile file)
+    {
+        log.info(">> 엑셀 업로드 처리");
+
+        String message = "";
+        if (ExcelHelper.hasExcelFormat(file))
+        {
+            try
+            {
+                excelDataService.save(file);
+
+                List<ExcelData> excelList = excelDataService.getAllExcelDatas();
+
+                if (excelList.isEmpty())
+                {
+                    return new ResponseEntity<String>(message, HttpStatus.NO_CONTENT);
+                }
+                return new ResponseEntity<List<ExcelData>>(excelList, HttpStatus.OK);
+            } 
+            catch (Exception e)
+            {
+                message = "해당 파일 업로드에 실패했습니다 : " + file.getOriginalFilename() + "!";
+                return new ResponseEntity<String>(message, HttpStatus.EXPECTATION_FAILED);
+            }
+        }
+        message = "하나의 엑셀 파일만 업로드 해주세요";
+        return new ResponseEntity<String>(message, HttpStatus.BAD_REQUEST);
+    }
+	
 	@GetMapping(value = "/excelView")
 	public ResponseEntity<List<ExcelTutorial>> excelView()
 	{

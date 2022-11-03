@@ -15,6 +15,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.inhatc.spring.excel.entity.ExcelData;
 import kr.inhatc.spring.excel.entity.ExcelTutorial;
 
 /**
@@ -136,5 +137,5 @@ public class ExcelHelper {
     } catch (IOException e) {
       throw new RuntimeException("엑셀로 데이터 가져오기 실패 : " + e.getMessage());
     }
-  }
+  }  
 }
