@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<!-- 사용자 CSS 추가 -->
+<th:block layout:fragment="css">
+
+</th:block>
+
+<!-- 사용자 스크립트 추가 -->
+<th:block layout:fragment="script">
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script type="text/javascript">
+//구글 차트 라이브러리 로딩
+google.load("visualization", "1",{
+	"packages":["corechart"]
+});
+//Callback : 구글 차트 로딩이 완료가 된 후에 drawChar라는 함수를 실행(파라미터는 없음)
+//responseText : json 데이터를 텍스트로 읽어들임
+//JSON.stringify(j/s객체) : javascript 객체를 json 데이터를 읽어들임
+google.setOnLoadCallback(drawChart);
+function drawChart(){
+	var jsonData = $.ajax({ 
+		url: "/json/sampleData.json",
+		dataType:"json",
+		async:false
+	}).responseText;
+	
+	console.log("jsonData : " + jsonData);
+	
+	//1) 데이터 테이블 생성
+	var data = new google.visualization.DataTable(jsonData);
+	
+	//2) 차트 출력할 영역 지정
+	var chart = new google.visualization.ColumnChart(document.getElementById("chart_div"));
+	//1) + 2) => 차트 출력! 차트객체.draw(데이터테이블, 옵션)
+	//curveType : "function" => 곡선
+	chart.draw(data,{
+		title:"차트 예제",
+		curveType:"function",
+		width:600,
+		height:440
+	})
+}
+</script>
+</th:block>
+
+<div layout:fragment="content">
+    <h3>구글(Google) 차트</h3>
+    <div id="chart_div"></div>
+</div>
+
+</html>

@@ -38,7 +38,7 @@
 					<artifactId>spring-boot-starter-logging</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>		
+		</dependency>
 
 		<!--
         1. Setting -> Compiler
@@ -70,7 +70,7 @@
 		<!-- 데이터베이스 관련 (MySQL)-->
 		<dependency>
 			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>			
+			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 
 		<!-- 데이터베이스 관련 (h2)-->
@@ -87,18 +87,18 @@
 
 		<dependency>
 			<groupId>jakarta.persistence</groupId>
-			<artifactId>jakarta.persistence-api</artifactId>			
+			<artifactId>jakarta.persistence-api</artifactId>
 		</dependency>
 
 		<!-- querydsl -->
 		<dependency>
 			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-jpa</artifactId>			
+			<artifactId>querydsl-jpa</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-apt</artifactId>			
+			<artifactId>querydsl-apt</artifactId>
 		</dependency>
 
 		<!-- SQL 정보 확인 -->
@@ -170,6 +170,20 @@
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!-- 구글 차트 -->
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>			
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
