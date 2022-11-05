@@ -71,27 +71,27 @@ public class ChartController
 		data.put("cols", title);
 
 		// 2. rows 배열에 넣기
-		JSONArray body = new JSONArray(); // rows
-		for (Map<String, Object> map : list)
-		{
-
-			// {"c":[{"v":"삼성 칼라 TV 29인치"}, {"v":14280000}]},;
-			JSONObject prodName = new JSONObject();
-			prodName.put("v", map.get("PROD_NAME"));
-			JSONObject money = new JSONObject();
-			money.put("v", map.get("MONEY")); // 금액
-
-			JSONArray row = new JSONArray();
-			row.add(prodName);
-			row.add(money);
-
-			JSONObject cell = new JSONObject();
-			cell.put("c", row);
-
-			body.add(cell); // 레코드 1행 추가
-		} // end for
-
-		data.put("rows", body);
+//		JSONArray body = new JSONArray(); // rows
+//		for (Map<String, Object> map : lists)
+//		{
+//
+//			// {"c":[{"v":"삼성 칼라 TV 29인치"}, {"v":14280000}]},;
+//			JSONObject prodName = new JSONObject();
+//			prodName.put("v", map.get("PROD_NAME"));
+//			JSONObject money = new JSONObject();
+//			money.put("v", map.get("MONEY")); // 금액
+//
+//			JSONArray row = new JSONArray();
+//			row.add(prodName);
+//			row.add(money);
+//
+//			JSONObject cell = new JSONObject();
+//			cell.put("c", row);
+//
+//			body.add(cell); // 레코드 1행 추가
+//		} // end for
+//
+//		data.put("rows", body);
 		return null;
 	}
 }
