@@ -13,7 +13,7 @@
 <th:block layout:fragment="script">
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
-<script type="text/javascript">
+<script th:inline="javascript">
 //구글 차트 라이브러리 로딩
 google.load("visualization", "1",{
 	"packages":["corechart"]
@@ -23,11 +23,16 @@ google.load("visualization", "1",{
 //JSON.stringify(j/s객체) : javascript 객체를 json 데이터를 읽어들임
 google.setOnLoadCallback(drawChart);
 function drawChart(){
-	var jsonData = $.ajax({ 
+	
+	// 파일을 직접 읽기 
+	/* var jsonData = $.ajax({ 
 		url: "/json/sampleData.json",
 		dataType:"json",
 		async:false
-	}).responseText;
+	}).responseText; */
+	
+	// model에서 가져온 값 출력하기 
+	var jsonData = [[${jsonData}]];
 	
 	console.log("jsonData : " + jsonData);
 	
@@ -41,8 +46,8 @@ function drawChart(){
 	chart.draw(data,{
 		title:"차트 예제",
 		curveType:"function",
-		width:600,
-		height:440
+		width:900,
+		height:640
 	})
 }
 </script>

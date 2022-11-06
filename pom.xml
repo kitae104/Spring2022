@@ -125,7 +125,7 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
-			<version>${spring-security.version}</version>
+			
 		</dependency>
 
 		<!-- 폼 데이터 검증 -->

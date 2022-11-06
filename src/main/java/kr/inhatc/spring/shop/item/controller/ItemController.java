@@ -69,7 +69,8 @@ public class ItemController
 		try
 		{
 			itemService.saveItem(itemFormDto, itemImgFileList); // 상품 저장
-		} catch (Exception e)
+		} 
+		catch (Exception e)
 		{
 			model.addAttribute("errorMessage", "상품 등록 중 에러가 발생하였습니다.");
 			return "item/itemForm"; // 오류시 상품 등록 페이지로 돌아감

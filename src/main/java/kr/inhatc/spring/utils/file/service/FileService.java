@@ -1,14 +1,15 @@
 package kr.inhatc.spring.utils.file.service;
 
-import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Service;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
+import lombok.extern.slf4j.Slf4j;
+
 @Service
-@Log4j2
+@Slf4j
 public class FileService {
 
     /**
