@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<!-- 사용자 CSS 추가 -->
+<th:block layout:fragment="css">
+	<!-- <link rel="stylesheet" href="/xterm/css/xterm.css" />
+    <script src="/xterm/lib/xterm.js"></script> -->
+    <style>
+    .xterm {
+    font-feature-settings: "liga" 0;
+    position: relative;
+    user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+}
+
+.xterm.focus,
+.xterm:focus {
+    outline: none;
+}
+
+.xterm .xterm-helpers {
+    position: absolute;
+    top: 0;
+    /**
+     * The z-index of the helpers must be higher than the canvases in order for
+     * IMEs to appear on top.
+     */
+    z-index: 5;
+}
+
+.xterm .xterm-helper-textarea {
+    /*
+     * HACK: to fix IE's blinking cursor
+     * Move textarea out of the screen to the far left, so that the cursor is not visible.
+     */
+    position: absolute;
+    opacity: 0;
+    left: -9999em;
+    top: 0;
+    width: 0;
+    height: 0;
+    z-index: -5;
+    /** Prevent wrapping so the IME appears against the textarea at the correct position */
+    white-space: nowrap;
+    overflow: hidden;
+    resize: none;
+}
+
+.xterm .composition-view {
+    /* TODO: Composition position got messed up somewhere */
+    background: #000;
+    color: #FFF;
+    display: none;
+    position: absolute;
+    white-space: nowrap;
+    z-index: 1;
+}
+
+.xterm .composition-view.active {
+    display: block;
+}
+
+.xterm .xterm-viewport {
+    /* On OS X this is required in order for the scroll bar to appear fully opaque */
+    background-color: #000;
+    overflow-y: scroll;
+    cursor: default;
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.xterm .xterm-screen {
+    position: relative;
+}
+
+.xterm .xterm-screen canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.xterm .xterm-scroll-area {
+    visibility: hidden;
+}
+
+.xterm-char-measure-element {
+    display: inline-block;
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: -9999em;
+    line-height: normal;
+}
+
+.xterm {
+    cursor: text;
+}
+
+.xterm.enable-mouse-events {
+    /* When mouse events are enabled (eg. tmux), revert to the standard pointer cursor */
+    cursor: default;
+}
+
+.xterm.xterm-cursor-pointer {
+    cursor: pointer;
+}
+
+.xterm.column-select.focus {
+    /* Column selection mode */
+    cursor: crosshair;
+}
+
+.xterm .xterm-accessibility,
+.xterm .xterm-message {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 10;
+    color: transparent;
+}
+
+.xterm .live-region {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.xterm-dim {
+    opacity: 0.5;
+}
+
+.xterm-underline {
+    text-decoration: underline;
+}
+    
+    </style>
+</th:block>
+
+<!-- 사용자 스크립트 추가 -->
+<th:block layout:fragment="script">
+	<!-- <script src="https://cdn.jsdelivr.net/npm/xterm@5.1.0-beta.61/lib/xterm.min.js"></script> -->	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js" referrerpolicy="no-referrer"></script>
+</th:block>
+
+<div layout:fragment="content"> 
+    <h1>xterm 연결</h1>
+    <div id="terminal"></div>
+    <script>
+		var term = new Terminal({
+			cursorBlink: "block"
+		});
+
+		var curr_line = '';
+		var entries = [];
+		var currPos = 0;
+		var pos = 0;
+
+		term.open(document.getElementById('terminal'));
+		term.prompt = () => {
+			term.write('\n\r' + curr_line + '\r\n\u001b[32mscm> \u001b[37m');
+		};
+		term.write('Welcome to my web terminal!');
+		term.prompt();
+
+		term.on('key', function(key, ev) {
+			const printable = !ev.altKey && !ev.altGraphKey && !ev.ctrlKey && !ev.metaKey &&
+				!(ev.keyCode === 37 && term.buffer.cursorX < 6);
+
+			if (ev.keyCode === 13) { // Enter key
+				if (curr_line.replace(/^\s+|\s+$/g, '').length != 0) { // Check if string is all whitespace
+					entries.push(curr_line);
+					currPos = entries.length - 1;
+					term.prompt();
+				} else {
+					term.write('\n\33[2K\r\u001b[32mscm> \u001b[37m');
+				}
+				curr_line = '';
+			} else if (ev.keyCode === 8) { // Backspace
+				if (term.buffer.cursorX > 5) {
+					curr_line = curr_line.slice(0, term.buffer.cursorX - 6) + curr_line.slice(term.buffer.cursorX - 5);
+					pos = curr_line.length - term.buffer.cursorX + 6;
+					term.write('\33[2K\r\u001b[32mscm> \u001b[37m' + curr_line);
+					term.write('\033['.concat(pos.toString()).concat('D')); //term.write('\033[<N>D');
+					if (term.buffer.cursorX == 5 || term.buffer.cursorX == curr_line.length + 6) {
+						term.write('\033[1C')
+					}
+				}
+			} else if (ev.keyCode === 38) { // Up arrow
+				if (entries.length > 0) {
+					if (currPos > 0) {
+						currPos -= 1;
+					}
+					curr_line = entries[currPos];
+					term.write('\33[2K\r\u001b[32mscm> \u001b[37m' + curr_line);
+				}
+			} else if (ev.keyCode === 40) { // Down arrow
+				currPos += 1;
+				if (currPos === entries.length || entries.length === 0) {
+					currPos -= 1;
+					curr_line = '';
+					term.write('\33[2K\r\u001b[32mscm> \u001b[37m');
+				} else {
+					curr_line = entries[currPos];
+					term.write('\33[2K\r\u001b[32mscm> \u001b[37m' + curr_line);
+
+				}
+			} else if (printable && !(ev.keyCode === 39 && term.buffer.cursorX > curr_line.length + 4)) {
+				if (ev.keyCode != 37 && ev.keyCode != 39) {
+					var input = ev.key;
+					if (ev.keyCode == 9) { // Tab
+						input = "    ";
+					}
+					pos = curr_line.length - term.buffer.cursorX + 4;
+					curr_line = [curr_line.slice(0, term.buffer.cursorX - 5), input, curr_line.slice(term.buffer.cursorX - 5)].join('');
+					term.write('\33[2K\r\u001b[32mscm> \u001b[37m' + curr_line);
+					term.write('\033['.concat(pos.toString()).concat('D')); //term.write('\033[<N>D');
+				} else {
+					term.write(key);
+				}
+			}
+		});
+
+		term.on('paste', function(data) {
+			curr_line += data;
+			term.write(curr_line);
+		});
+	</script>
+</div>
+
+</html>
