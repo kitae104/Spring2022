@@ -62,15 +62,15 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom
 		{
 			return null;
 		}
-		else if(StringUtils.equals("id", searchDateType))
+		else if(StringUtils.equals("1d", searchDateType))
 		{
 			dateTime = dateTime.minusDays(1);
 		}
-		else if(StringUtils.equals("iw", searchDateType))
+		else if(StringUtils.equals("1w", searchDateType))
 		{
 			dateTime = dateTime.minusWeeks(1);
 		}
-		else if(StringUtils.equals("im", searchDateType))
+		else if(StringUtils.equals("1m", searchDateType))
 		{
 			dateTime = dateTime.minusMonths(1);
 		}
